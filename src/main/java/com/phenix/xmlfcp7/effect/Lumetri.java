@@ -24,6 +24,7 @@ public class Lumetri extends Effect {
         this.blanc = blanc;
     }
 
+    @Override
     public String toString() {
         return "<filter>\n"
                 + "<effect>\n"
