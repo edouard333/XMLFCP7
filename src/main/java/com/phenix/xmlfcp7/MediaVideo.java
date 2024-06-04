@@ -45,13 +45,13 @@ public class MediaVideo extends Media {
     /**
      * Valeur de la couche alpha : aucune.
      */
-    public final static String ALPHA_NONE = "none";
+    public static final String ALPHA_NONE = "none";
 
     /**
      * Valeur de la couche alpha : oui, valeur utilisée pour
      * classique/infographie.
      */
-    public final static String ALPHA_STRAIGHT = "straight";
+    public static final String ALPHA_STRAIGHT = "straight";
 
     /**
      * Rapport de zoom du média. 100% = normal, par défaut.
