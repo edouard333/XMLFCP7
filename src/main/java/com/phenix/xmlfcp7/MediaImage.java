@@ -14,6 +14,6 @@ public class MediaImage extends Media {
      */
     public MediaImage(String nom_fichier) {
         super(nom_fichier);
-        super.type_media = "image";
+        this.type_media = "image";
     }
 }

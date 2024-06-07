@@ -26,7 +26,7 @@ public class MediaTexte extends MediaVideo {
      */
     public MediaTexte(int framerate) {
         super("Image", framerate);
-        super.type_media = "genere";
+        this.type_media = "genere";
         this.setDureeFichier(new Timecode("99:00:00:00", framerate));
         this.setStart(new Timecode("00:00:00:00", framerate));
         this.setIn(new Timecode("00:00:00:00", framerate));

@@ -24,7 +24,7 @@ public class MediaAudio extends Media {
      */
     public MediaAudio(String nom_fichier) {
         super(nom_fichier);
-        super.type_media = "audio";
+        this.type_media = "audio";
         this.numero_source_canal = 1;
     }
 
