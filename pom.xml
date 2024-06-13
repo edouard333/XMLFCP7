@@ -4,7 +4,7 @@
     <groupId>com.phenix</groupId>
     <artifactId>xmlfcp7</artifactId>
     <name>XMLFCP7</name>
-    <version>0.8.2</version>
+    <version>0.8.3</version>
     <packaging>jar</packaging>
     <url>https://github.com/edouard333/XMLFCP7</url>
     

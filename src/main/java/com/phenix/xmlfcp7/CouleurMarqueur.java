@@ -21,7 +21,9 @@ public enum CouleurMarqueur {
     /**
      * On ne connait pas la valeur de la couleur Premiere.
      */
-    ORANGE("4280578025", 0, 255, 127, 0);
+    ORANGE("4280578025", 0, 255, 127, 0),
+    JAUNE("4281049552", 0, 0, 0, 0),
+    BLANC("4294967295", 0, 0, 0, 0);
 
     /**
      * ID de couleur pour Adobe Premiere.
@@ -108,6 +110,28 @@ public enum CouleurMarqueur {
      */
     public String getCouleurPremiere() {
         return this.id_couleur_premiere;
+    }
+
+    /**
+     * Retourne une couleur de marqueur selon la couleur d'Adobe Premiere.
+     *
+     * @param couleur_premiere Couleur Adobe Premiere.
+     * @return La couleur.
+     */
+    public static CouleurMarqueur fromCouleurPremiere(String couleur_premiere) {
+        CouleurMarqueur[] liste_couleur = values();
+
+        for (CouleurMarqueur couleur : liste_couleur) {
+            if (couleur.id_couleur_premiere == null) {
+                if (couleur.id_couleur_premiere == couleur_premiere) {
+                    return couleur;
+                }
+            } else if (couleur.id_couleur_premiere.equals(couleur_premiere)) {
+                return couleur;
+            }
+        }
+
+        return null;
     }
 
     /**
