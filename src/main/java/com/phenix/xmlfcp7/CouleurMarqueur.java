@@ -11,18 +11,24 @@ public enum CouleurMarqueur {
      */
     ROUGE("4281740498", 0, 255, 0, 0),
     /**
-     * On ne connait pas la valeur de la couleur Premiere.
+     * Couleur vert, on ne connait pas la valeur de la couleur Adobe Premiere.
      */
     VERT(null, 0, 48, 191, 72),
     /**
-     * On ne connait pas la valeur de la couleur Premiere.
+     * Couleur bleu, on ne connait pas la valeur de la couleur Adobe Premiere.
      */
     BLEU("4294741314", 0, 0, 0, 255),
     /**
-     * On ne connait pas la valeur de la couleur Premiere.
+     * Couleur orange, on ne connait pas la valeur de la couleur Adobe Premiere.
      */
     ORANGE("4280578025", 0, 255, 127, 0),
+    /**
+     * Couleur jaune, on ne connait pas la valeur de la couleur Adobe Premiere.
+     */
     JAUNE("4281049552", 0, 0, 0, 0),
+    /**
+     * Couleur blanc, on ne connait pas la valeur de la couleur Adobe Premiere.
+     */
     BLANC("4294967295", 0, 0, 0, 0);
 
     /**

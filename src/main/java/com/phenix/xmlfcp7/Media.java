@@ -363,7 +363,7 @@ public class Media {
     /**
      * Retourne la liste des effets du média.
      *
-     * @return
+     * @return Liste des effets.
      */
     public ArrayList<Effect> getListeEffect() {
         return this.liste_effet;

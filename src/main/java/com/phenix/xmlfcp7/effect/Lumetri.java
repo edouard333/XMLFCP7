@@ -12,14 +12,27 @@ public class Lumetri extends Effect {
      */
     private int blanc;
 
+    /**
+     * Construit l'effet {@code Lumetri}.
+     */
     public Lumetri() {
         this.blanc = 0;
     }
 
+    /**
+     * Retourne le blanc.
+     *
+     * @return Le blanc.
+     */
     public int getBlanc() {
         return this.blanc;
     }
 
+    /**
+     * Définit le blanc.
+     *
+     * @param blanc Valeur du blanc.
+     */
     public void setBlanc(int blanc) {
         this.blanc = blanc;
     }
