@@ -4,7 +4,7 @@
     <groupId>com.phenix</groupId>
     <artifactId>xmlfcp7</artifactId>
     <name>XMLFCP7</name>
-    <version>0.8.3</version>
+    <version>0.8.4</version>
     <packaging>jar</packaging>
     <url>https://github.com/edouard333/XMLFCP7</url>
     
@@ -57,7 +57,7 @@
         <dependency>
             <groupId>com.phenix</groupId>
             <artifactId>timecode</artifactId>
-            <version>0.7.1</version>
+            <version>0.7.2</version>
         </dependency>
     </dependencies>
     
