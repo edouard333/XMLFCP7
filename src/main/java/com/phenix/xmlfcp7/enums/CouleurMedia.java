@@ -1,4 +1,4 @@
-package com.phenix.xmlfcp7;
+package com.phenix.xmlfcp7.enums;
 
 /**
  * Couleur pour un média.
@@ -39,7 +39,8 @@ public enum CouleurMedia {
      *
      * @return Valeur de la couleur pour Adobe Premiere.
      */
-    public String getCouleurAdobe() {
+    @Override
+    public String toString() {
         return this.couleur_premiere;
     }
 }

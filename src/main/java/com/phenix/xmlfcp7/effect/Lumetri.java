@@ -5,7 +5,7 @@ package com.phenix.xmlfcp7.effect;
  *
  * @author <a href="mailto:edouard128@hotmail.com">Edouard Jeanjean</a>
  */
-public class Lumetri extends Effect {
+public final class Lumetri extends Effect {
 
     /**
      * Valeur du blanc.

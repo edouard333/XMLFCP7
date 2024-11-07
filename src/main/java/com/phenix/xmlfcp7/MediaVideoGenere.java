@@ -5,7 +5,7 @@ package com.phenix.xmlfcp7;
  *
  * @author <a href="mailto:edouard128@hotmail.com">Edouard Jeanjean</a>
  */
-public class MediaVideoGenere extends MediaVideo {
+public final class MediaVideoGenere extends MediaVideo {
 
     /**
      * ID du média vidéo noire.

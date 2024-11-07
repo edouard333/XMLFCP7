@@ -14,27 +14,36 @@ import java.util.ArrayList;
  *
  * @author <a href="mailto:edouard128@hotmail.com">Edouard Jeanjean</a>
  */
-public class XMLFCP7 {
+public final class XMLFCP7 {
 
     /**
-     * Si on lit l'XML.
+     * Les différents modes.
      */
-    public static final String LECTURE = "r";
+    public enum Mode {
+        /**
+         * Si on lit l'XML.
+         */
+        LECTURE,
+        /**
+         * Si on écrit l'XML.
+         */
+        ECRITURE;
+    }
 
     /**
-     * Si on écrit l'XML.
+     * Logiciels utilisables pour l'export.
      */
-    public static final String ECRITURE = "w";
+    public enum Logiciel {
 
-    /**
-     * Si l'XML est pour Adobe Premiere Pro CC2017.
-     */
-    public static final byte PREMIERE = 0;
-
-    /**
-     * Si l'XML est pour DaVinci Resolve 16.2.5.015.
-     */
-    public static final byte RESOLVE = 1;
+        /**
+         * Si l'XML est pour Adobe Premiere Pro CC2017.
+         */
+        PREMIERE,
+        /**
+         * Si l'XML est pour DaVinci Resolve 16.2.5.015.
+         */
+        RESOLVE;
+    }
 
     /**
      * Le fichier XML à créer ou lire.
@@ -44,7 +53,7 @@ public class XMLFCP7 {
     /**
      * Si écriture ou lecture.
      */
-    private String mode;
+    private Mode mode;
 
     /**
      * Nom du projet.
@@ -69,7 +78,7 @@ public class XMLFCP7 {
     /**
      * L'XML est destiné à quel logiciel.
      */
-    private byte logiciel_destination;
+    private Logiciel logiciel_destination;
 
     /**
      * Construit un {@code XMLFCP7}.
@@ -77,8 +86,8 @@ public class XMLFCP7 {
      * @param fichier Le chemin et nom du fichier.
      * @param mode Si on lit ou écrit l'XML.
      */
-    public XMLFCP7(File fichier, String mode) {
-        this(fichier, mode, PREMIERE);
+    public XMLFCP7(File fichier, Mode mode) {
+        this(fichier, mode, Logiciel.PREMIERE);
     }
 
     /**
@@ -88,7 +97,7 @@ public class XMLFCP7 {
      * @param mode Si on lit ou écrit l'XML.
      * @param logiciel_destination Le XML est destiné à quel logiciel.
      */
-    public XMLFCP7(File fichier, String mode, byte logiciel_destination) {
+    public XMLFCP7(File fichier, Mode mode, Logiciel logiciel_destination) {
         this.fichier = fichier;
         this.mode = mode;
         this.logiciel_destination = logiciel_destination;
@@ -148,7 +157,7 @@ public class XMLFCP7 {
      */
     public void close() {
         // En écriture, on écrit tout.
-        if (this.mode.equals(ECRITURE)) {
+        if (this.mode == Mode.ECRITURE) {
             try {
                 // Si on veut faire de l'UTF8 mais alors on doit vérifier que les Strings reçus sont en UTF8.
                 OutputStream os = new FileOutputStream(this.fichier);
@@ -163,18 +172,18 @@ public class XMLFCP7 {
                 file.append("\t\t<children>\n");
 
                 // Liste des dossiers :
-                for (int i = 0; i < this.liste_dossier.size(); i++) {
-                    file.append(this.liste_dossier.get(i).toString());
+                for (Dossier dossier : this.liste_dossier) {
+                    file.append(dossier.toString());
                 }
 
                 // Liste timeline :
-                for (int i = 0; i < this.liste_timeline.size(); i++) {
-                    file.append(this.liste_timeline.get(i).toString());
+                for (Timeline timeline : this.liste_timeline) {
+                    file.append(timeline.toString());
                 }
 
                 // Liste des médias :
-                for (int i = 0; i < this.liste_media.size(); i++) {
-                    file.append(this.liste_media.get(i).toString());
+                for (Media media : this.liste_media) {
+                    file.append(media.toString());
                 }
 
                 file.append("\t\t</children>\n");
@@ -207,8 +216,8 @@ public class XMLFCP7 {
      *
      * @return Suffixe du fichier.
      */
-    public static String getSuffixeFichier(byte logiciel_destination) {
-        return (logiciel_destination == PREMIERE) ? "PRE" : "RESOLVE";
+    public static String getSuffixeFichier(Logiciel logiciel_destination) {
+        return (logiciel_destination == Logiciel.PREMIERE) ? "PRE" : "RESOLVE";
     }
 
     /**

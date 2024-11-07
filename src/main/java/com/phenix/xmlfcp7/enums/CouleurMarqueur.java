@@ -1,4 +1,4 @@
-package com.phenix.xmlfcp7;
+package com.phenix.xmlfcp7.enums;
 
 /**
  * Définit les couleurs des marqueurs.

@@ -5,7 +5,7 @@ package com.phenix.xmlfcp7;
  *
  * @author <a href="mailto:edouard128@hotmail.com">Edouard Jeanjean</a>
  */
-public class MediaAudio extends Media {
+public final class MediaAudio extends Media {
 
     /**
      * Nombre de canaux du fichier audio.

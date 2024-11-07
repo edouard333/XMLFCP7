@@ -1,13 +1,14 @@
 package com.phenix.xmlfcp7;
 
 import com.phenix.timecode.Timecode;
+import com.phenix.xmlfcp7.enums.Alpha;
 
 /**
  * Média généré (dans le logiciel) et pas issu d'un fichier.
  *
  * @author <a href="mailto:edouard128@hotmail.com">Edouard Jeanjean</a>
  */
-public class MediaTexte extends MediaVideo {
+public final class MediaTexte extends MediaVideo {
 
     /**
      * Le média source.
@@ -31,7 +32,7 @@ public class MediaTexte extends MediaVideo {
         this.setStart(new Timecode("00:00:00:00", framerate));
         this.setIn(new Timecode("00:00:00:00", framerate));
         this.media_source = "GraphicAndType";
-        this.setAlpha(MediaVideo.ALPHA_STRAIGHT);
+        this.setAlpha(Alpha.STRAIGHT);
     }
 
     /**

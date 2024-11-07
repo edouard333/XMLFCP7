@@ -7,7 +7,7 @@ import java.util.ArrayList;
  *
  * @author <a href="mailto:edouard128@hotmail.com">Edouard Jeanjean</a>
  */
-public class Dossier {
+public final class Dossier {
 
     /**
      * Liste des médias dans le dossier.
@@ -32,47 +32,67 @@ public class Dossier {
     /**
      * La couleur du dossier.
      */
-    private String couleur;
+    private CouleurAdobe couleur;
 
     /**
-     * Couleur orange pour Adobe.
+     * Couleurs d'Adobe.
      */
-    public static final String COULEUR_ORANGE = "Mango";
+    public enum CouleurAdobe {
+        /**
+         * Couleur orange pour Adobe.
+         */
+        ORANGE("Mango"),
+        /**
+         * Couleur rose pour Adobe.
+         */
+        ROSE("Rose"),
+        /**
+         * Couleur vert pour Adobe.
+         */
+        FORET("Forest"),
+        /**
+         * Couleur bleue pour Adobe.
+         */
+        CERULEEN("Cerulean"),
+        /**
+         * Couleur mauve pour Adobe.
+         */
+        LAVANDE("Lavender"),
+        /**
+         * Couleur XXX pour Adobe.
+         */
+        CARAIBE("Caribbean"),
+        /**
+         * Couleur XXX pour Adobe.
+         */
+        IRIS("Iris"),
+        /**
+         * Couleur violet pour Adobe.
+         */
+        VIOLET("Violet");
 
-    /**
-     * Couleur rose pour Adobe.
-     */
-    public static final String COULEUR_ROSE = "Rose";
+        /**
+         *
+         */
+        private final String valeur;
 
-    /**
-     * Couleur vert pour Adobe.
-     */
-    public static final String COULEUR_FORET = "Forest";
+        /**
+         *
+         * @param valeur
+         */
+        private CouleurAdobe(String valeur) {
+            this.valeur = valeur;
+        }
 
-    /**
-     * Couleur bleue pour Adobe.
-     */
-    public static final String COULEUR_CERULEEN = "Cerulean";
-
-    /**
-     * Couleur mauve pour Adobe.
-     */
-    public static final String COULEUR_LAVANDE = "Lavender";
-
-    /**
-     * Couleur XXX pour Adobe.
-     */
-    public static final String COULEUR_CARAIBE = "Caribbean";
-
-    /**
-     * Couleur XXX pour Adobe.
-     */
-    public static final String COULEUR_IRIS = "Iris";
-
-    /**
-     * Couleur violet pour Adobe.
-     */
-    public static final String COULEUR_VIOLET = "Violet";
+        /**
+         *
+         * @return
+         */
+        @Override
+        public String toString() {
+            return this.valeur;
+        }
+    }
 
     /**
      * Construit un objet Dossier.
@@ -81,7 +101,7 @@ public class Dossier {
      */
     public Dossier(String nom) {
         this.nom = nom;
-        this.couleur = COULEUR_ORANGE;
+        this.couleur = CouleurAdobe.ORANGE;
     }
 
     /**
@@ -90,7 +110,7 @@ public class Dossier {
      * @param nom Nom du dossier.
      * @param couleur Couleur du dossier.
      */
-    public Dossier(String nom, String couleur) {
+    public Dossier(String nom, CouleurAdobe couleur) {
         this.nom = nom;
         this.couleur = couleur;
     }
@@ -136,7 +156,7 @@ public class Dossier {
      *
      * @param couleur La couleur.
      */
-    public void setCouleur(String couleur) {
+    public void setCouleur(CouleurAdobe couleur) {
         this.couleur = couleur;
     }
 
@@ -165,18 +185,18 @@ public class Dossier {
         xml += "<children>\n";
 
         // Ajout des sous-dossiers :
-        for (int i = 0; i < this.liste_dossier.size(); i++) {
-            xml += this.liste_dossier.get(i).toString();
+        for (Dossier dossier : this.liste_dossier) {
+            xml += dossier.toString();
         }
 
         // Ajout des médias :
-        for (int i = 0; i < this.liste_media.size(); i++) {
-            xml += ((Media) this.liste_media.get(i)).toString();
+        for (Media media : this.liste_media) {
+            xml += ((Media) media).toString();
         }
 
         // Ajout des séquences :
-        for (int i = 0; i < this.liste_timeline.size(); i++) {
-            xml += this.liste_timeline.get(i).toString();
+        for (Timeline timeline : this.liste_timeline) {
+            xml += timeline.toString();
         }
 
         xml += "</children>\n"

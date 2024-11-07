@@ -1,7 +1,9 @@
 package com.phenix.xmlfcp7;
 
 import com.phenix.timecode.Timecode;
+import com.phenix.xmlfcp7.XMLFCP7.Logiciel;
 import com.phenix.xmlfcp7.effect.Effect;
+import com.phenix.xmlfcp7.enums.CouleurMarqueur;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -15,7 +17,7 @@ import java.util.UUID;
  *
  * @author <a href="mailto:edouard128@hotmail.com">Edouard Jeanjean</a>
  */
-public class Timeline {
+public final class Timeline {
 
     /**
      * Le nom de la timeline.
@@ -176,7 +178,7 @@ public class Timeline {
     /**
      * Définit la timeline est pour quel logiciel.
      */
-    private byte logiciel_destination;
+    private Logiciel logiciel_destination;
 
     /**
      * Position du curseur dans la timeline.
@@ -229,7 +231,7 @@ public class Timeline {
         this.verrouiller_piste_audio = false;
 
         // Par défaut c'est pour Adobe Premiere.
-        this.logiciel_destination = XMLFCP7.PREMIERE;
+        this.logiciel_destination = XMLFCP7.Logiciel.PREMIERE;
 
         this.numero_timeline = nombre_timeline;
         nombre_timeline++;
@@ -259,8 +261,7 @@ public class Timeline {
         xml += "\t\t\t\t<out>" + ((marqueur.getOut() == null || marqueur.getIn().toString().equals(marqueur.getOut().toString())) ? "-1" : (marqueur.getOut().toImage() - this.start_tc.toImage() + 1)) + "</out>\n";
 
         if (marqueur.getCouleur() != null) {
-
-            if (this.logiciel_destination == XMLFCP7.PREMIERE) {
+            if (this.logiciel_destination == XMLFCP7.Logiciel.PREMIERE) {
                 // Le vert étant le par défaut, on ne l'affiche pas.
                 if (marqueur.getCouleur() != CouleurMarqueur.VERT) {
                     xml += "\t\t\t\t<pproColor>" + marqueur.getCouleur().getCouleurPremiere() + "</pproColor>\n";
@@ -441,7 +442,7 @@ public class Timeline {
                 + // Je sais plus.
                 "\t\t\t\t\t\t<pproTicksOut>" + (m.getOut().toImage() * 254016000000L / this.framerate) + "</pproTicksOut>\n"; // Je sais plus.
         /*if (!(m instanceof MediaTexte)) {
-            xml += "\t\t\t\t\t\t<alphatype>"+m.getAlpha()+"</alphatype>\n";
+            xml += "\t\t\t\t\t\t<alphatype>"+m.getAlpha().getMethode()+"</alphatype>\n";
         } else {
             xml += "\t\t\t\t\t\t<alphatype>straight</alphatype>\n";
         }*/
@@ -452,9 +453,8 @@ public class Timeline {
         // Si le fichier est généré.
         if (!m.getTypeMedia().equals("genere")) {
             if (!m.dejaUtilise()) {
-
                 // Si le logiciel est Adobe Premiere :
-                if (this.logiciel_destination == XMLFCP7.PREMIERE) {
+                if (this.logiciel_destination == Logiciel.PREMIERE) {
                     xml += "\t\t\t\t\t\t<file id=\"file-" + m.getId() + "\">\n"
                             + "\t\t\t\t\t\t\t<name>" + nom_fichier + "</name>\n"
                             + "\t\t\t\t\t\t\t<pathurl>" + m.getLocalisation() + "</pathurl>\n"
@@ -615,21 +615,21 @@ public class Timeline {
                     + "\t\t\t\t\t\t</link>\n";
 
             // DaVinci Resolve indique le mode composition.
-            if (this.logiciel_destination == XMLFCP7.RESOLVE) {
+            if (this.logiciel_destination == Logiciel.RESOLVE) {
                 xml += "\t\t\t\t\t\t<compositemode>normal</compositemode>\n";
             }
 
             // Ajoute les effets sur le média :
             ArrayList<Effect> liste_effet = m.getListeEffect();
 
-            for (int i = 0; i < liste_effet.size(); i++) {
-                xml += liste_effet.get(i).toString();
+            for (Effect effet : liste_effet) {
+                xml += effet.toString();
             }
 
             // Cas quand il y a un déplacement :
             xml += "\t\t\t\t\t\t<filter>\n";
 
-            if (this.logiciel_destination == XMLFCP7.RESOLVE) {
+            if (this.logiciel_destination == Logiciel.RESOLVE) {
                 xml += "\t\t\t\t\t\t\t<enabled>TRUE</enabled>\n"
                         + "\t\t\t\t\t\t\t<start>" + m.getStart().toImage() + "</start>\n"
                         + "\t\t\t\t\t\t\t<end>" + m.getStart().toImage() + m.getDuree().toImage() + "</end>\n";
@@ -663,7 +663,7 @@ public class Timeline {
                     + "\t\t\t\t\t\t\t\t\t<name>Center</name>\n"
                     + "\t\t\t\t\t\t\t\t\t<value>\n";
             // Position en X : 0 = centre.
-            if (this.logiciel_destination == XMLFCP7.PREMIERE) {
+            if (this.logiciel_destination == Logiciel.PREMIERE) {
                 xml += "\t\t\t\t\t\t\t\t\t\t<horiz>" + new DecimalFormat("#.#########", new DecimalFormatSymbols(Locale.ENGLISH)).format(m.getPositionHorizontale(this.largeur, this.hauteur, this.par)) + "</horiz>\n";
                 xml += "\t\t\t\t\t\t\t\t\t\t<vert>" + new DecimalFormat("#.#########", new DecimalFormatSymbols(Locale.ENGLISH)).format(m.getPositionVerticale(this.largeur, this.hauteur, this.par)) + "</vert>\n";
             } else {
@@ -896,7 +896,7 @@ public class Timeline {
         }
 
         // Il se peut que cela soit une image et non une vidéo qu'on doit freezer.
-        if (this.logiciel_destination == XMLFCP7.RESOLVE && m.isFreeze()) {
+        if (this.logiciel_destination == XMLFCP7.Logiciel.RESOLVE && m.isFreeze()) {
             xml += "\t\t\t\t\t\t<filter>\n";
             xml += "\t\t\t\t\t\t\t<enabled>TRUE</enabled>\n";
             xml += "\t\t\t\t\t\t\t<start>-1</start>\n";
@@ -986,7 +986,7 @@ public class Timeline {
                 + "\t\t\t\t\t\t</colorinfo>\n"
                 + "\t\t\t\t\t\t<labels>\n"
                 //+ "\t\t\t\t\t\t\t<label>Meilleure prise</label>\n"
-                + "\t\t\t\t\t\t\t<label2>" + m.getCouleur().getCouleurAdobe() + "</label2>\n"
+                + "\t\t\t\t\t\t\t<label2>" + m.getCouleur() + "</label2>\n"
                 + "\t\t\t\t\t\t</labels>\n"
                 + "\t\t\t\t\t</clipitem>\n";
         return xml;
@@ -1198,10 +1198,10 @@ public class Timeline {
         // On traite une vidéo :
         /* if (media.getClass().getSimpleName().equals("MediaVideo")) {
             if (media.getHauteur() != this.hauteur || media.getLargeur() != this.largeur)
-                System.out.println("Alert: Les dimensions du média sont différents de la timeline.");
+                System.out.println("Alert : Les dimensions du média sont différents de la timeline.");
 
             if (media.getFramerate() != this.framerate)
-                System.out.println("Alert: Le framerate du média est différent de celui de la timeline.");
+                System.out.println("Alert : Le framerate du média est différent de celui de la timeline.");
         }*/
     }
 
@@ -1321,13 +1321,13 @@ public class Timeline {
         ArrayList<Integer> num_piste = new ArrayList<>();
         int max = 0;
 
-        for (int i = 0; i < this.liste_piste_video.size(); i++) {
-            if (!num_piste.contains(this.liste_piste_video.get(i))) {
-                num_piste.add(this.liste_piste_video.get(i));
+        for (Integer piste_video : this.liste_piste_video) {
+            if (!num_piste.contains(piste_video)) {
+                num_piste.add(piste_video);
 
                 // Piste max:
-                if (this.liste_piste_video.get(i) > max) {
-                    max = this.liste_piste_video.get(i);
+                if (piste_video > max) {
+                    max = piste_video;
                 }
             }
         }
@@ -1368,13 +1368,13 @@ public class Timeline {
         ArrayList<Integer> num_piste_audio = new ArrayList<>();
         int max_audio = 0;
 
-        for (int i = 0; i < this.liste_piste_audio.size(); i++) {
-            if (!num_piste_audio.contains(this.liste_piste_audio.get(i))) {
-                num_piste_audio.add(this.liste_piste_audio.get(i));
+        for (Integer piste_audio : this.liste_piste_audio) {
+            if (!num_piste_audio.contains(piste_audio)) {
+                num_piste_audio.add(piste_audio);
 
                 // Piste max:
-                if (this.liste_piste_audio.get(i) > max_audio) {
-                    max_audio = this.liste_piste_audio.get(i);
+                if (piste_audio > max_audio) {
+                    max_audio = piste_audio;
                 }
             }
         }
@@ -1451,8 +1451,8 @@ public class Timeline {
         xml += "\t\t</timecode>\n";
 
         // Les marques :
-        for (int i = 0; i < this.liste_marqueur.size(); i++) {
-            xml += this.addMarqueurTimeline(this.liste_marqueur.get(i));
+        for (Marqueur marqueur : this.liste_marqueur) {
+            xml += this.addMarqueurTimeline(marqueur);
         }
 
         xml += "\t\t<labels>\n";
@@ -1469,7 +1469,6 @@ public class Timeline {
      * @return
      */
     private String outputGroupe(int nb) {
-
         String xml = "";
 
         for (int i = 1; i <= nb; i++) {
@@ -1511,7 +1510,7 @@ public class Timeline {
      *
      * @param logiciel_destination Logiciel auquel est destiné la timeline.
      */
-    public void setLogicielDestination(byte logiciel_destination) {
+    public void setLogicielDestination(Logiciel logiciel_destination) {
         this.logiciel_destination = logiciel_destination;
     }
 

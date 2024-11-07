@@ -2,6 +2,9 @@ package com.phenix.xmlfcp7;
 
 import com.phenix.timecode.Timecode;
 import com.phenix.xmlfcp7.effect.Effect;
+import com.phenix.xmlfcp7.enums.CouleurMedia;
+import com.phenix.xmlfcp7.enums.Balayage;
+import com.phenix.xmlfcp7.enums.Trame;
 import java.util.ArrayList;
 
 /**
@@ -59,39 +62,12 @@ public class Media {
     /**
      * Balayage.
      */
-    private int balayage;
+    private Balayage balayage;
 
     /**
      * Si trame supérieure ou inférieure ou aucune dans le cas progressif.
      */
-    private String trame;
-
-    /**
-     * Balayage progressif.
-     */
-    public static final int BALAYAGE_PROGRESSIF = 0;
-
-    /**
-     * Balayage entrelacé.
-     */
-    public static final int BALAYAGE_ENTRELACE = 1;
-
-    /**
-     * Trame impaire.<br>
-     *
-     * TODO : Trouver la valeur qu'on ne connait pas encore.
-     */
-    public static final String TRAME_PAIRE = "...";
-
-    /**
-     * Trame impaire.
-     */
-    public static final String TRAME_IMPAIRE = "upper";
-
-    /**
-     * Aucune trame, donc balayage progressif.
-     */
-    public static final String TRAME_AUCUNE = "none";
+    private Trame trame;
 
     /**
      * Id du média. (?)
@@ -120,6 +96,9 @@ public class Media {
      */
     private CouleurMedia couleur = CouleurMedia.BLEU;
 
+    /**
+     *
+     */
     private ArrayList<Effect> liste_effet = new ArrayList<Effect>();
 
     /**
@@ -131,8 +110,8 @@ public class Media {
         this.nom_fichier = nom_fichier;
 
         // Par défaut, balayage progressig (donc aucune trame).
-        this.balayage = BALAYAGE_PROGRESSIF;
-        this.trame = TRAME_AUCUNE;
+        this.balayage = Balayage.PROGRESSIF;
+        this.trame = Trame.AUCUNE;
 
         id = id_actuelle;
         id_actuelle++;
@@ -149,8 +128,8 @@ public class Media {
         this.framerate = framerate;
 
         // Par défaut, balayage progressig (donc aucune trame).
-        this.balayage = BALAYAGE_PROGRESSIF;
-        this.trame = TRAME_AUCUNE;
+        this.balayage = Balayage.PROGRESSIF;
+        this.trame = Trame.AUCUNE;
 
         id = id_actuelle;
         id_actuelle++;
@@ -292,7 +271,7 @@ public class Media {
      *
      * @return La trame.
      */
-    public String getTrame() {
+    public Trame getTrame() {
         return this.trame;
     }
 
@@ -310,9 +289,9 @@ public class Media {
      *
      * @param balayage Le balayage.
      * @param trame Si entrelacé, on indique la trame, sinon utiliser
-     * {@link Media#TRAME_AUCUNE TRAME_AUCUNE}.
+     * {@link Trame#AUCUNE AUCUNE}.
      */
-    public void setBalayage(int balayage, String trame) {
+    public void setBalayage(Balayage balayage, Trame trame) {
         this.balayage = balayage;
         this.trame = trame;
     }

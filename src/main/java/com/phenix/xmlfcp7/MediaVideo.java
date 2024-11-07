@@ -1,5 +1,8 @@
 package com.phenix.xmlfcp7;
 
+import com.phenix.xmlfcp7.XMLFCP7.Logiciel;
+import com.phenix.xmlfcp7.enums.Alpha;
+
 /**
  * Média de type vidéo (image + audio).
  *
@@ -40,18 +43,7 @@ public class MediaVideo extends Media {
     /**
      * Si canal alpha.
      */
-    private String alpha;
-
-    /**
-     * Valeur de la couche alpha : aucune.
-     */
-    public static final String ALPHA_NONE = "none";
-
-    /**
-     * Valeur de la couche alpha : oui, valeur utilisée pour
-     * classique/infographie.
-     */
-    public static final String ALPHA_STRAIGHT = "straight";
+    private Alpha alpha;
 
     /**
      * Rapport de zoom du média. 100% = normal, par défaut.
@@ -67,7 +59,7 @@ public class MediaVideo extends Media {
      * À quel logiciel est destiné ce média vidéo.<br>
      * Par défaut c'est Adobe Premiere.
      */
-    private byte logiciel_destination = XMLFCP7.PREMIERE;
+    private Logiciel logiciel_destination = Logiciel.PREMIERE;
 
     /**
      * Information pour le média vidéo, mais qu'on ne peut renseigner
@@ -95,7 +87,7 @@ public class MediaVideo extends Media {
         this.canaux = 0;
         this.type_media = "video";
         this.par = 1;
-        this.alpha = ALPHA_NONE;
+        this.alpha = Alpha.NONE;
     }
 
     /**
@@ -109,7 +101,7 @@ public class MediaVideo extends Media {
         this.canaux = 0;
         this.type_media = "video";
         this.par = 1;
-        this.alpha = ALPHA_NONE;
+        this.alpha = Alpha.NONE;
     }
 
     /**
@@ -117,7 +109,7 @@ public class MediaVideo extends Media {
      *
      * @return La couche alpha.
      */
-    public String getAlpha() {
+    public Alpha getAlpha() {
         return this.alpha;
     }
 
@@ -184,10 +176,10 @@ public class MediaVideo extends Media {
      */
     public double getPositionHorizontale(double largeur_timeline, double hauteur_timeline, double par_timeline) {
         // On divise la largeur en 2 pour avoir la partie positive ou négative.
-        if (this.logiciel_destination == XMLFCP7.PREMIERE) {
+        if (this.logiciel_destination == Logiciel.PREMIERE) {
             return ((this.x - (largeur_timeline / 2F)) / this.largeur) * (par_timeline / this.par);
             // return (this.x / largeur_timeline) - 0.5D;
-        } // Pour Resolve: 
+        } // Pour Resolve :
         else {
             double calcule_x = (this.x / largeur_timeline) - 0.5D;
 
@@ -219,7 +211,7 @@ public class MediaVideo extends Media {
      */
     public double getPositionVerticale(double largeur_timeline, double hauteur_timeline, double par_timeline) {
         // On divise la hauteur en 2 pour avoir la partie positive ou négative.
-        if (logiciel_destination == XMLFCP7.PREMIERE) {
+        if (logiciel_destination == Logiciel.PREMIERE) {
             return (this.y - (hauteur_timeline / 2F)) / this.hauteur;
             //return ((this.y / hauteur_timeline) - (0.5D)) * (((double) this.largeur / (double) this.hauteur) / (largeur_timeline / hauteur_timeline));
         } // Pour Resolve:
@@ -268,7 +260,7 @@ public class MediaVideo extends Media {
      *
      * @param alpha La couche alpha.
      */
-    public void setAlpha(String alpha) {
+    public void setAlpha(Alpha alpha) {
         this.alpha = alpha;
     }
 
@@ -326,7 +318,7 @@ public class MediaVideo extends Media {
      *
      * @param logiciel_destination Logiciel auquel est destiné la timeline.
      */
-    public void setLogicielDestination(byte logiciel_destination) {
+    public void setLogicielDestination(Logiciel logiciel_destination) {
         this.logiciel_destination = logiciel_destination;
     }
 

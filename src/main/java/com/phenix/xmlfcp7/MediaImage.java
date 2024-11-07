@@ -5,7 +5,7 @@ package com.phenix.xmlfcp7;
  *
  * @author <a href="mailto:edouard128@hotmail.com">Edouard Jeanjean</a>
  */
-public class MediaImage extends Media {
+public final class MediaImage extends Media {
 
     /**
      * Construit un média image.

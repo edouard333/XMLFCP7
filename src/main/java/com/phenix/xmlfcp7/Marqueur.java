@@ -1,13 +1,14 @@
 package com.phenix.xmlfcp7;
 
 import com.phenix.timecode.Timecode;
+import com.phenix.xmlfcp7.enums.CouleurMarqueur;
 
 /**
  * Marqueur dans un projet d'un NLE.
  *
  * @author <a href="mailto:edouard128@hotmail.com">Edouard Jeanjean</a>
  */
-public class Marqueur {
+public final class Marqueur {
 
     /**
      * Nom du marqueur.
