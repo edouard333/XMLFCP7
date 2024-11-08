@@ -537,9 +537,11 @@ public final class Timeline {
                             + "\t\t\t\t\t\t\t\t\t</samplecharacteristics>\n"
                             + "\t\t\t\t\t\t\t\t</video>\n";
 
-                    /* S'il y a des pistes audios.
+                    /*
+                    // S'il y a des pistes audios.
                     if()
-                    xml += "";*/
+                    xml += "";
+                     */
                 }
 
                 if (((MediaVideo) m).getCanaux() > 0) {

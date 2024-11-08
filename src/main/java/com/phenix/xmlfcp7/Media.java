@@ -2,8 +2,8 @@ package com.phenix.xmlfcp7;
 
 import com.phenix.timecode.Timecode;
 import com.phenix.xmlfcp7.effect.Effect;
-import com.phenix.xmlfcp7.enums.CouleurMedia;
 import com.phenix.xmlfcp7.enums.Balayage;
+import com.phenix.xmlfcp7.enums.CouleurMedia;
 import com.phenix.xmlfcp7.enums.Trame;
 import java.util.ArrayList;
 
