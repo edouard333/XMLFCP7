@@ -1,5 +1,8 @@
 package com.phenix.xmlfcp7.enums;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 /**
  * Les différentes possibilités de couche alpha.
  *
@@ -19,6 +22,8 @@ public enum Alpha {
     /**
      * Méthode de la couleur alpha.
      */
+    @NotNull
+    @NotBlank
     private final String methode;
 
     /**
@@ -26,7 +31,7 @@ public enum Alpha {
      *
      * @param methode La méthode.
      */
-    private Alpha(String methode) {
+    private Alpha(@NotNull @NotBlank String methode) {
         this.methode = methode;
     }
 
@@ -35,6 +40,8 @@ public enum Alpha {
      *
      * @return Méthode de couche.
      */
+    @NotNull
+    @NotBlank
     @Override
     public String toString() {
         return this.methode;

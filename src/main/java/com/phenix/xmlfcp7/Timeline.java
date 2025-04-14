@@ -4,6 +4,8 @@ import com.phenix.timecode.Timecode;
 import com.phenix.xmlfcp7.XMLFCP7.Logiciel;
 import com.phenix.xmlfcp7.effect.Effect;
 import com.phenix.xmlfcp7.enums.CouleurMarqueur;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -68,7 +70,9 @@ public final class Timeline {
      * Liste des UUID pour rendre unique une timeline.<br>
      * Cela permet de générer dans un projet 14 timelines.
      */
-    private final String[] uuid = {
+    @NotNull
+    @NotBlank
+    private static final String[] LISTE_UUID = {
         "0e2897bc-1636-4432-bcf2-07d28e53dc39",
         "165c6655-f6b8-4573-8f51-e8f5ba3a14f8",
         "3f523f59-06b7-4df8-9d75-4b3d2e930afb",
@@ -93,77 +97,77 @@ public final class Timeline {
     /**
      * Liste des pistes vidéo dans la timeline.
      */
-    private ArrayList<Integer> liste_piste_video = new ArrayList<Integer>();
+    private ArrayList<Integer> liste_piste_video;
 
     /**
      * Liste des pistes audio dans la timeline.
      */
-    private ArrayList<Integer> liste_piste_audio = new ArrayList<Integer>();
+    private ArrayList<Integer> liste_piste_audio;
 
     /**
      * Liste des médias vidéo dans la timeline.
      */
-    private ArrayList<Media> liste_media_video = new ArrayList<Media>();
+    private ArrayList<Media> liste_media_video;
 
     /**
      * Liste des médias audio dans la timeline.
      */
-    private ArrayList<Media> liste_media_audio = new ArrayList<Media>();
+    private ArrayList<Media> liste_media_audio;
 
     /**
      * TC start du média vidéo dans la timeline.
      */
-    private ArrayList<Timecode> liste_tc_start_video = new ArrayList<Timecode>();
+    private ArrayList<Timecode> liste_tc_start_video;
 
     /**
      * TC start du média audio dans la timeline.
      */
-    private ArrayList<Timecode> liste_tc_start_audio = new ArrayList<Timecode>();
+    private ArrayList<Timecode> liste_tc_start_audio;
 
     /**
      * TC end du média vidéo dans la timeline.
      */
-    private ArrayList<Timecode> liste_tc_end_video = new ArrayList<Timecode>();
+    private ArrayList<Timecode> liste_tc_end_video;
 
     /**
      * TC end du média audio dans la timeline.
      */
-    private ArrayList<Timecode> liste_tc_end_audio = new ArrayList<Timecode>();
+    private ArrayList<Timecode> liste_tc_end_audio;
 
     /**
      * Si le média vidéo est activé dans la timeline.
      */
-    private ArrayList<Boolean> liste_active_video = new ArrayList<Boolean>();
+    private ArrayList<Boolean> liste_active_video;
 
     /**
      * Si le média vidéo est activé dans la timeline.
      */
-    private ArrayList<Boolean> liste_active_audio = new ArrayList<Boolean>();
+    private ArrayList<Boolean> liste_active_audio;
 
     /**
      * Liste des marqueurs dans la timeline
      */
-    private ArrayList<Marqueur> liste_marqueur = new ArrayList<Marqueur>();
+    private ArrayList<Marqueur> liste_marqueur;
 
     /**
      * La fin de la piste vidéo.
      */
-    private HashMap<Integer, Integer> fin_piste_video = new HashMap<Integer, Integer>();
+    private HashMap<Integer, Integer> fin_piste_video;
 
     /**
      * La fin de la piste vidéo.
      */
-    private HashMap<Integer, Integer> fin_piste_audio = new HashMap<Integer, Integer>();
+    private HashMap<Integer, Integer> fin_piste_audio;
 
     /**
      * Liste des pistes vidéos à verrouiller.
      */
-    private ArrayList<Integer> liste_piste_video_verrouiller = new ArrayList<Integer>(10);
+    private ArrayList<Integer> liste_piste_video_verrouiller;
 
     /**
      * Liste des pistes audio à verrouiller.
      */
-    private ArrayList<Integer> liste_piste_audio_verrouiller = new ArrayList<Integer>(4);
+    private ArrayList<Integer> liste_piste_audio_verrouiller;
 
     /**
      * Quand on veut verrouiller toutes les pistes vidéos.
@@ -232,6 +236,23 @@ public final class Timeline {
 
         // Par défaut c'est pour Adobe Premiere.
         this.logiciel_destination = XMLFCP7.Logiciel.PREMIERE;
+
+        // Initialise les valeurs dans le constructeur et non dans la classe.
+        this.liste_piste_video = new ArrayList<Integer>();
+        this.liste_piste_audio = new ArrayList<Integer>();
+        this.liste_media_video = new ArrayList<Media>();
+        this.liste_media_audio = new ArrayList<Media>();
+        this.liste_tc_start_video = new ArrayList<Timecode>();
+        this.liste_tc_start_audio = new ArrayList<Timecode>();
+        this.liste_tc_end_video = new ArrayList<Timecode>();
+        this.liste_tc_end_audio = new ArrayList<Timecode>();
+        this.liste_active_video = new ArrayList<Boolean>();
+        this.liste_active_audio = new ArrayList<Boolean>();
+        this.liste_marqueur = new ArrayList<Marqueur>();
+        this.fin_piste_video = new HashMap<Integer, Integer>();
+        this.fin_piste_audio = new HashMap<Integer, Integer>();
+        this.liste_piste_video_verrouiller = new ArrayList<Integer>(10);
+        this.liste_piste_audio_verrouiller = new ArrayList<Integer>(4);
 
         this.numero_timeline = nombre_timeline;
         nombre_timeline++;
@@ -1257,6 +1278,8 @@ public final class Timeline {
      *
      * @return Code XML à ajouter dans le fichier projet Adobe Premiere.
      */
+    @NotNull
+    @NotBlank
     @Override
     public String toString() {
         // Informations générales :
@@ -1272,7 +1295,7 @@ public final class Timeline {
         xml += "MZ.Sequence.EditingModeGUID=\"9678af98-a7b7-4bdb-b477-7ac9c8df4a4e\" ";
         xml += "MZ.Sequence.VideoTimeDisplayFormat=\"100\" MZ.WorkOutPoint=\"1461057696000000\" MZ.WorkInPoint=\"0\" ";
         xml += "MZ.ZeroPoint=\"" + (this.start_tc.toImage() * 254016000000L / this.framerate) + "\" explodedTracks=\"true\">\n";
-        xml += "\t\t<uuid>" + /*this.uuid[numero_timeline]*/ UUID.randomUUID().toString() + "</uuid>\n";
+        xml += "\t\t<uuid>" + /*LISTE_UUID[numero_timeline]*/ UUID.randomUUID().toString() + "</uuid>\n";
         xml += "\t\t<duration>" + this.liste_media_video.get(0).getDuree().toImage() + "</duration>\n";
         xml += "\t\t<rate>\n";
         xml += "\t\t\t<timebase>" + this.framerate + "</timebase>\n";
@@ -1470,6 +1493,7 @@ public final class Timeline {
      * @param nb
      * @return
      */
+    @NotNull
     private String outputGroupe(int nb) {
         String xml = "";
 
@@ -1539,8 +1563,9 @@ public final class Timeline {
      *
      * @param startTc Le timecode de début.
      */
-    public void setStart(Timecode startTc) {
+    public void setStart(@NotNull Timecode startTc) {
         this.start_tc = startTc;
+
         if (this.framerate != 0) {
             this.start_tc.setFramerate(this.framerate);
         } // Sinon, on affecte le framerate du timecode (s'il en a un) à média.
@@ -1562,7 +1587,7 @@ public final class Timeline {
      * @param numero_piste Numéro de piste audio.
      */
     public void verrouillerPisteAudio(int numero_piste) {
-        verrouillerPisteAudio(numero_piste, true);
+        this.verrouillerPisteAudio(numero_piste, true);
     }
 
     /**
@@ -1593,7 +1618,7 @@ public final class Timeline {
      * @param numero_piste Numéro de piste vidéo.
      */
     public void verrouillerPisteVideo(int numero_piste) {
-        verrouillerPisteVideo(numero_piste, true);
+        this.verrouillerPisteVideo(numero_piste, true);
     }
 
     /**

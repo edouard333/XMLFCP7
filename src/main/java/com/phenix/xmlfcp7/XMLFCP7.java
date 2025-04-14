@@ -1,5 +1,7 @@
 package com.phenix.xmlfcp7;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -63,17 +65,20 @@ public final class XMLFCP7 {
     /**
      * Liste des médias.
      */
-    private ArrayList<Media> liste_media = new ArrayList<Media>();
+    @NotNull
+    private final ArrayList<Media> liste_media;
 
     /**
      * Liste des timelines.
      */
-    private ArrayList<Timeline> liste_timeline = new ArrayList<Timeline>();
+    @NotNull
+    private final ArrayList<Timeline> liste_timeline;
 
     /**
      * Liste des dossiers.
      */
-    private ArrayList<Dossier> liste_dossier = new ArrayList<Dossier>();
+    @NotNull
+    private final ArrayList<Dossier> liste_dossier;
 
     /**
      * L'XML est destiné à quel logiciel.
@@ -81,7 +86,7 @@ public final class XMLFCP7 {
     private Logiciel logiciel_destination;
 
     /**
-     * Construit un {@code XMLFCP7}.
+     * Construit un {@link XMLFCP7}.
      *
      * @param fichier Le chemin et nom du fichier.
      * @param mode Si on lit ou écrit l'XML.
@@ -91,7 +96,7 @@ public final class XMLFCP7 {
     }
 
     /**
-     * Construit un {@code XMLFCP7}.
+     * Construit un {@link XMLFCP7}.
      *
      * @param fichier Le chemin et nom du fichier.
      * @param mode Si on lit ou écrit l'XML.
@@ -101,6 +106,10 @@ public final class XMLFCP7 {
         this.fichier = fichier;
         this.mode = mode;
         this.logiciel_destination = logiciel_destination;
+
+        this.liste_media = new ArrayList<Media>();
+        this.liste_timeline = new ArrayList<Timeline>();
+        this.liste_dossier = new ArrayList<Dossier>();
 
         // Si on crée un nouvel XML FCP7, alors le nombre de timeline est de 0.
         Timeline.nombre_timeline = 0;
@@ -155,7 +164,7 @@ public final class XMLFCP7 {
     /**
      * On clôt le fichier dans soit sa lecture soit dans son écriture.
      */
-    public void close() {
+    public void save() {
         // En écriture, on écrit tout.
         if (this.mode == Mode.ECRITURE) {
             try {
@@ -216,6 +225,8 @@ public final class XMLFCP7 {
      *
      * @return Suffixe du fichier.
      */
+    @NotNull
+    @NotBlank
     public static String getSuffixeFichier(Logiciel logiciel_destination) {
         return (logiciel_destination == Logiciel.PREMIERE) ? "PRE" : "RESOLVE";
     }

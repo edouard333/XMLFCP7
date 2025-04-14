@@ -1,5 +1,7 @@
 package com.phenix.xmlfcp7.enums;
 
+import jakarta.validation.constraints.Null;
+
 /**
  * Définit les couleurs des marqueurs.
  *
@@ -34,6 +36,7 @@ public enum CouleurMarqueur {
     /**
      * ID de couleur pour Adobe Premiere.
      */
+    @Null
     private final String id_couleur_premiere;
 
     /**
@@ -65,7 +68,7 @@ public enum CouleurMarqueur {
      * @param canal_vert
      * @param canal_bleu
      */
-    private CouleurMarqueur(String id_couleur_premiere, int canal_alpha, int canal_rouge, int canal_vert, int canal_bleu) {
+    private CouleurMarqueur(@Null String id_couleur_premiere, int canal_alpha, int canal_rouge, int canal_vert, int canal_bleu) {
         this.id_couleur_premiere = id_couleur_premiere;
         this.canal_alpha = canal_alpha;
         this.canal_rouge = canal_rouge;
@@ -124,10 +127,9 @@ public enum CouleurMarqueur {
      * @param couleur_premiere Couleur Adobe Premiere.
      * @return La couleur.
      */
+    @Null
     public static CouleurMarqueur fromCouleurPremiere(String couleur_premiere) {
-        CouleurMarqueur[] liste_couleur = values();
-
-        for (CouleurMarqueur couleur : liste_couleur) {
+        for (CouleurMarqueur couleur : values()) {
             if (couleur.id_couleur_premiere == null) {
                 if (couleur.id_couleur_premiere == couleur_premiere) {
                     return couleur;
@@ -145,6 +147,7 @@ public enum CouleurMarqueur {
      *
      * @return Valeur de la couleur selon Adobe Premiere.
      */
+    @Null
     @Override
     public String toString() {
         return this.id_couleur_premiere;

@@ -5,6 +5,8 @@ import com.phenix.xmlfcp7.effect.Effect;
 import com.phenix.xmlfcp7.enums.Balayage;
 import com.phenix.xmlfcp7.enums.CouleurMedia;
 import com.phenix.xmlfcp7.enums.Trame;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 
 /**
@@ -99,7 +101,8 @@ public class Media {
     /**
      *
      */
-    private ArrayList<Effect> liste_effet = new ArrayList<Effect>();
+    @NotNull
+    private final ArrayList<Effect> liste_effet;
 
     /**
      * Définit un média sur base de son nom de fichier.
@@ -112,6 +115,7 @@ public class Media {
         // Par défaut, balayage progressig (donc aucune trame).
         this.balayage = Balayage.PROGRESSIF;
         this.trame = Trame.AUCUNE;
+        this.liste_effet = new ArrayList<Effect>();
 
         id = id_actuelle;
         id_actuelle++;
@@ -124,15 +128,8 @@ public class Media {
      * @param framerate Framerate.
      */
     public Media(String nom_fichier, int framerate) {
-        this.nom_fichier = nom_fichier;
+        this(nom_fichier);
         this.framerate = framerate;
-
-        // Par défaut, balayage progressig (donc aucune trame).
-        this.balayage = Balayage.PROGRESSIF;
-        this.trame = Trame.AUCUNE;
-
-        id = id_actuelle;
-        id_actuelle++;
     }
 
     /**
@@ -167,6 +164,7 @@ public class Media {
      *
      * @return Durée.
      */
+    @NotNull
     public Timecode getDuree() {
         return new Timecode((this.out.toImage() - this.in.toImage() + 1), this.framerate);
     }
@@ -328,8 +326,9 @@ public class Media {
      *
      * @param in Point in.
      */
-    public void setIn(Timecode in) {
+    public void setIn(@NotNull Timecode in) {
         this.in = in;
+
         // Si média a un framerate, on l'affecte au timecode reçu.
         if (this.framerate != 0) {
             this.in.setFramerate(this.framerate);
@@ -344,6 +343,7 @@ public class Media {
      *
      * @return Liste des effets.
      */
+    @NotNull
     public ArrayList<Effect> getListeEffect() {
         return this.liste_effet;
     }
@@ -390,8 +390,9 @@ public class Media {
      *
      * @param out Point out.
      */
-    public void setOut(Timecode out) {
+    public void setOut(@NotNull Timecode out) {
         this.out = out;
+
         if (this.framerate != 0) {
             this.out.setFramerate(this.framerate);
         } // Sinon, on affecte le framerate du timecode (s'il en a un) à média.
@@ -405,8 +406,9 @@ public class Media {
      *
      * @param start Timecode de début.
      */
-    public void setStart(Timecode start) {
+    public void setStart(@NotNull Timecode start) {
         this.start = start;
+
         if (this.framerate != 0) {
             this.start.setFramerate(this.framerate);
         } // Sinon, on affecte le framerate du timecode (s'il en a un) à média.
@@ -420,6 +422,8 @@ public class Media {
      *
      * @return Code XML.
      */
+    @NotNull
+    @NotBlank
     @Override
     public String toString() {
         String xml = "<clip id=\"masterclip-5\" explodedTracks=\"true\">\n"

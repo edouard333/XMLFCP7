@@ -1,5 +1,8 @@
 package com.phenix.xmlfcp7.enums;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 /**
  * Couleur pour un média.
  *
@@ -23,6 +26,8 @@ public enum CouleurMedia {
     /**
      * Couleur pour Adobe Premiere.
      */
+    @NotNull
+    @NotBlank
     private final String couleur_premiere;
 
     /**
@@ -30,7 +35,7 @@ public enum CouleurMedia {
      *
      * @param couleur_premiere Couleur pour Adobe Premiere.
      */
-    private CouleurMedia(String couleur_premiere) {
+    private CouleurMedia(@NotNull @NotBlank String couleur_premiere) {
         this.couleur_premiere = couleur_premiere;
     }
 
@@ -39,6 +44,8 @@ public enum CouleurMedia {
      *
      * @return Valeur de la couleur pour Adobe Premiere.
      */
+    @NotNull
+    @NotBlank
     @Override
     public String toString() {
         return this.couleur_premiere;

@@ -3,6 +3,7 @@
  */
 module com.phenix.xmlfcp7 {
     requires com.phenix.timecode;
+    requires jakarta.validation;
 
     exports com.phenix.xmlfcp7;
     exports com.phenix.xmlfcp7.enums;

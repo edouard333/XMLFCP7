@@ -2,6 +2,8 @@ package com.phenix.xmlfcp7;
 
 import com.phenix.timecode.Timecode;
 import com.phenix.xmlfcp7.enums.Alpha;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * Média généré (dans le logiciel) et pas issu d'un fichier.
@@ -13,6 +15,8 @@ public final class MediaTexte extends MediaVideo {
     /**
      * Le média source.
      */
+    @NotNull
+    @NotBlank
     private final String media_source;
 
     /**
@@ -40,6 +44,8 @@ public final class MediaTexte extends MediaVideo {
      *
      * @return Le média source.
      */
+    @NotNull
+    @NotBlank
     public String getMediaSource() {
         return this.media_source;
     }

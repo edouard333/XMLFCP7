@@ -1,5 +1,8 @@
 package com.phenix.xmlfcp7.enums;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 /**
  *
  * @author <a href="mailto:edouard128@hotmail.com">Edouard Jeanjean</a>
@@ -24,6 +27,8 @@ public enum Trame {
     /**
      * La valeur.
      */
+    @NotNull
+    @NotBlank
     private final String valeur;
 
     /**
@@ -31,7 +36,7 @@ public enum Trame {
      *
      * @param valeur La valeur.
      */
-    private Trame(String valeur) {
+    private Trame(@NotNull @NotBlank String valeur) {
         this.valeur = valeur;
     }
 
@@ -40,6 +45,8 @@ public enum Trame {
      *
      * @return La valeur.
      */
+    @NotNull
+    @NotBlank
     @Override
     public String toString() {
         return this.valeur;

@@ -1,5 +1,8 @@
 package com.phenix.xmlfcp7.effect;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 /**
  * Effet Lumetri.
  *
@@ -13,7 +16,7 @@ public final class Lumetri extends Effect {
     private int blanc;
 
     /**
-     * Construit l'effet {@code Lumetri}.
+     * Construit l'effet {@link Lumetri}.
      */
     public Lumetri() {
         this.blanc = 0;
@@ -37,6 +40,8 @@ public final class Lumetri extends Effect {
         this.blanc = blanc;
     }
 
+    @NotNull
+    @NotBlank
     @Override
     public String toString() {
         return "<filter>\n"

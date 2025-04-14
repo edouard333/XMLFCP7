@@ -1,5 +1,7 @@
 package com.phenix.xmlfcp7;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 
 /**
@@ -12,26 +14,31 @@ public final class Dossier {
     /**
      * Liste des médias dans le dossier.
      */
-    private ArrayList<Media> liste_media = new ArrayList<Media>();
+    @NotNull
+    private final ArrayList<Media> liste_media;
 
     /**
      * Liste des timelines dans le dossier.
      */
-    private ArrayList<Timeline> liste_timeline = new ArrayList<Timeline>();
+    @NotNull
+    private final ArrayList<Timeline> liste_timeline;
 
     /**
      * Liste des dossiers dans le dossier.
      */
-    private ArrayList<Dossier> liste_dossier = new ArrayList<Dossier>();
+    @NotNull
+    private final ArrayList<Dossier> liste_dossier;
 
     /**
      * Nom du dossier.
      */
+    @NotNull
     private String nom;
 
     /**
      * La couleur du dossier.
      */
+    @NotNull
     private CouleurAdobe couleur;
 
     /**
@@ -74,13 +81,15 @@ public final class Dossier {
         /**
          *
          */
+        @NotNull
+        @NotBlank
         private final String valeur;
 
         /**
          *
          * @param valeur
          */
-        private CouleurAdobe(String valeur) {
+        private CouleurAdobe(@NotNull @NotBlank String valeur) {
             this.valeur = valeur;
         }
 
@@ -88,6 +97,8 @@ public final class Dossier {
          *
          * @return
          */
+        @NotNull
+        @NotBlank
         @Override
         public String toString() {
             return this.valeur;
@@ -99,9 +110,8 @@ public final class Dossier {
      *
      * @param nom Nom du dossier
      */
-    public Dossier(String nom) {
-        this.nom = nom;
-        this.couleur = CouleurAdobe.ORANGE;
+    public Dossier(@NotNull String nom) {
+        this(nom, CouleurAdobe.ORANGE);
     }
 
     /**
@@ -110,9 +120,13 @@ public final class Dossier {
      * @param nom Nom du dossier.
      * @param couleur Couleur du dossier.
      */
-    public Dossier(String nom, CouleurAdobe couleur) {
+    public Dossier(@NotNull String nom, @NotNull CouleurAdobe couleur) {
         this.nom = nom;
         this.couleur = couleur;
+
+        this.liste_media = new ArrayList<Media>();
+        this.liste_timeline = new ArrayList<Timeline>();
+        this.liste_dossier = new ArrayList<Dossier>();
     }
 
     /**
@@ -120,7 +134,7 @@ public final class Dossier {
      *
      * @param dossier Dossier à ajouter.
      */
-    public void addDossier(Dossier dossier) {
+    public void addDossier(@NotNull Dossier dossier) {
         this.liste_dossier.add(dossier);
     }
 
@@ -129,7 +143,7 @@ public final class Dossier {
      *
      * @param media Média à ajouter.
      */
-    public void addMedia(Media media) {
+    public void addMedia(@NotNull Media media) {
         this.liste_media.add(media);
     }
 
@@ -138,7 +152,7 @@ public final class Dossier {
      *
      * @param timeline La timeline.
      */
-    public void addTimeline(Timeline timeline) {
+    public void addTimeline(@NotNull Timeline timeline) {
         this.liste_timeline.add(timeline);
     }
 
@@ -147,6 +161,7 @@ public final class Dossier {
      *
      * @return Nom du dossier.
      */
+    @NotNull
     public String getNom() {
         return this.nom;
     }
@@ -156,7 +171,7 @@ public final class Dossier {
      *
      * @param couleur La couleur.
      */
-    public void setCouleur(CouleurAdobe couleur) {
+    public void setCouleur(@NotNull CouleurAdobe couleur) {
         this.couleur = couleur;
     }
 
@@ -165,7 +180,7 @@ public final class Dossier {
      *
      * @param nom Le nom.
      */
-    public void setNom(String nom) {
+    public void setNom(@NotNull String nom) {
         this.nom = nom;
     }
 
@@ -174,6 +189,8 @@ public final class Dossier {
      *
      * @return Code XML.
      */
+    @NotNull
+    @NotBlank
     @Override
     public String toString() {
         String xml = "<bin>\n"

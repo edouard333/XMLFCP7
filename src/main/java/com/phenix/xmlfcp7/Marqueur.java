@@ -2,6 +2,8 @@ package com.phenix.xmlfcp7;
 
 import com.phenix.timecode.Timecode;
 import com.phenix.xmlfcp7.enums.CouleurMarqueur;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 
 /**
  * Marqueur dans un projet d'un NLE.
@@ -33,6 +35,7 @@ public final class Marqueur {
     /**
      * Couleur du marqueur.
      */
+    @Null
     private CouleurMarqueur couleur;
 
     /**
@@ -105,7 +108,7 @@ public final class Marqueur {
      * @param out Timecode out.
      * @param couleur Couleur.
      */
-    public Marqueur(String note, Timecode in, Timecode out, CouleurMarqueur couleur) {
+    public Marqueur(String note, Timecode in, Timecode out, @Null CouleurMarqueur couleur) {
         this(note, in, out, couleur, "");
     }
 
@@ -118,7 +121,7 @@ public final class Marqueur {
      * @param couleur Couleur.
      * @param nom Nom du marqueur.
      */
-    public Marqueur(String note, Timecode in, Timecode out, CouleurMarqueur couleur, String nom) {
+    public Marqueur(String note, Timecode in, Timecode out, @Null CouleurMarqueur couleur, String nom) {
         this.note = note;
         this.in = in;
         this.out = out;
@@ -131,6 +134,7 @@ public final class Marqueur {
      *
      * @return couleur.
      */
+    @Null
     public CouleurMarqueur getCouleur() {
         return this.couleur;
     }
@@ -140,8 +144,9 @@ public final class Marqueur {
      *
      * @return Durée.
      */
+    @NotNull
     public Timecode getDuree() {
-        this.duree = new Timecode((out.toImage() - in.toImage() + 1), this.framerate);
+        this.duree = new Timecode((this.out.toImage() - this.in.toImage() + 1), this.framerate);
         return this.duree;
     }
 
@@ -195,7 +200,7 @@ public final class Marqueur {
      *
      * @param couleur Couleur.
      */
-    public void setCouleur(CouleurMarqueur couleur) {
+    public void setCouleur(@Null CouleurMarqueur couleur) {
         this.couleur = couleur;
     }
 
@@ -213,7 +218,7 @@ public final class Marqueur {
      *
      * @param in Timecode in.
      */
-    public void setIn(Timecode in) {
+    public void setIn(@NotNull Timecode in) {
         this.in = in;
         if (this.framerate != 0) {
             this.in.setFramerate(this.framerate);
@@ -246,7 +251,7 @@ public final class Marqueur {
      *
      * @param out Timecode out.
      */
-    public void setOut(Timecode out) {
+    public void setOut(@NotNull Timecode out) {
         this.out = out;
 
         if (this.framerate != 0) {
