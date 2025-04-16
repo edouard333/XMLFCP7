@@ -166,7 +166,7 @@ public class MediaVideo extends Media {
      * Pour n'importe quelque résolution : /123F<br>
      * <br>
      * Pour Resolve : UHD :<br>
-     * Il y a un calcul.<br>
+     * Il y a un calcul.
      *
      * @param largeur_timeline Largeur de la timeline.
      * @param hauteur_timeline Hauteur de la timeline.
@@ -201,7 +201,7 @@ public class MediaVideo extends Media {
      * Pour n'importe quelque résolution : /81F<br>
      * <br>
      * Pour Resolve :<br>
-     * Il y a un calcul.<br>
+     * Il y a un calcul.
      *
      * @param largeur_timeline Largeur de la timeline.
      * @param hauteur_timeline Hauteur de la timeline.

@@ -25,7 +25,7 @@ public final class MediaTexte extends MediaVideo {
     private String texte;
 
     /**
-     * Définit un élément texte.<br>
+     * Définit un élément texte.
      *
      * @param framerate Framerate.
      */

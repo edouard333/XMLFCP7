@@ -1213,7 +1213,7 @@ public final class Timeline {
     }
 
     /**
-     * TODO : Vérifie que le média ajouté est conforme à la timeline.<br>
+     * TODO : Vérifie que le média ajouté est conforme à la timeline.
      *
      * @param media Média à comparer avec la timeline.
      */
