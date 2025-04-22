@@ -1,15 +1,14 @@
 package com.phenix.xmlfcp7;
 
+import com.phenix.xmlfcp7.exception.XMLFCP7Exception;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * XML Final Cut Pro 7.
@@ -66,19 +65,19 @@ public final class XMLFCP7 {
      * Liste des médias.
      */
     @NotNull
-    private final ArrayList<Media> liste_media;
+    private final List<Media> liste_media;
 
     /**
      * Liste des timelines.
      */
     @NotNull
-    private final ArrayList<Timeline> liste_timeline;
+    private final List<Timeline> liste_timeline;
 
     /**
      * Liste des dossiers.
      */
     @NotNull
-    private final ArrayList<Dossier> liste_dossier;
+    private final List<Dossier> liste_dossier;
 
     /**
      * L'XML est destiné à quel logiciel.
@@ -162,49 +161,42 @@ public final class XMLFCP7 {
     }
 
     /**
-     * On clôt le fichier dans soit sa lecture soit dans son écriture.
+     * On sauve le fichier.
+     *
+     * @throws XMLFCP7Exception
      */
-    public void save() {
-        // En écriture, on écrit tout.
-        if (this.mode == Mode.ECRITURE) {
-            try {
-                // Si on veut faire de l'UTF8 mais alors on doit vérifier que les Strings reçus sont en UTF8.
-                OutputStream os = new FileOutputStream(this.fichier);
-                PrintWriter file = new PrintWriter(new OutputStreamWriter(os, StandardCharsets.UTF_8));
-                //PrintWriter file = new PrintWriter(this.fichier);
-                file.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-                file.append("<!DOCTYPE xmeml>\n");
-                file.append("<xmeml version=\"4\">\n");
+    public void save() throws XMLFCP7Exception {
+        // Si on veut faire de l'UTF8 mais alors on doit vérifier que les Strings reçus sont en UTF8.
+        try (PrintWriter writer = new PrintWriter(this.fichier, StandardCharsets.UTF_8)) {
+            writer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+            writer.append("<!DOCTYPE xmeml>\n");
+            writer.append("<xmeml version=\"4\">\n");
 
-                file.append("\t<project>\n");
-                file.append("\t\t<name>" + this.titre_projet + "</name>\n");
-                file.append("\t\t<children>\n");
+            writer.append("\t<project>\n");
+            writer.append("\t\t<name>" + this.titre_projet + "</name>\n");
+            writer.append("\t\t<children>\n");
 
-                // Liste des dossiers :
-                for (Dossier dossier : this.liste_dossier) {
-                    file.append(dossier.toString());
-                }
-
-                // Liste timeline :
-                for (Timeline timeline : this.liste_timeline) {
-                    file.append(timeline.toString());
-                }
-
-                // Liste des médias :
-                for (Media media : this.liste_media) {
-                    file.append(media.toString());
-                }
-
-                file.append("\t\t</children>\n");
-                file.append("\t</project>\n");
-
-                file.append("</xmeml>");
-                file.close();
-            } catch (FileNotFoundException exception) {
-                exception.printStackTrace();
+            // Liste des dossiers :
+            for (Dossier dossier : this.liste_dossier) {
+                writer.append(dossier.toString());
             }
-        } // En lecture, on ne fait que lire.
-        else {
+
+            // Liste timeline :
+            for (Timeline timeline : this.liste_timeline) {
+                writer.append(timeline.toString());
+            }
+
+            // Liste des médias :
+            for (Media media : this.liste_media) {
+                writer.append(media.toString());
+            }
+
+            writer.append("\t\t</children>\n");
+            writer.append("\t</project>\n");
+
+            writer.append("</xmeml>");
+        } catch (IOException exception) {
+            throw new XMLFCP7Exception(exception.getMessage(), exception);
         }
     }
 

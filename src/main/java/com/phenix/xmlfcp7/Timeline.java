@@ -11,7 +11,9 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -97,77 +99,77 @@ public final class Timeline {
     /**
      * Liste des pistes vidéo dans la timeline.
      */
-    private ArrayList<Integer> liste_piste_video;
+    private List<Integer> liste_piste_video;
 
     /**
      * Liste des pistes audio dans la timeline.
      */
-    private ArrayList<Integer> liste_piste_audio;
+    private List<Integer> liste_piste_audio;
 
     /**
      * Liste des médias vidéo dans la timeline.
      */
-    private ArrayList<Media> liste_media_video;
+    private List<Media> liste_media_video;
 
     /**
      * Liste des médias audio dans la timeline.
      */
-    private ArrayList<Media> liste_media_audio;
+    private List<Media> liste_media_audio;
 
     /**
      * TC start du média vidéo dans la timeline.
      */
-    private ArrayList<Timecode> liste_tc_start_video;
+    private List<Timecode> liste_tc_start_video;
 
     /**
      * TC start du média audio dans la timeline.
      */
-    private ArrayList<Timecode> liste_tc_start_audio;
+    private List<Timecode> liste_tc_start_audio;
 
     /**
      * TC end du média vidéo dans la timeline.
      */
-    private ArrayList<Timecode> liste_tc_end_video;
+    private List<Timecode> liste_tc_end_video;
 
     /**
      * TC end du média audio dans la timeline.
      */
-    private ArrayList<Timecode> liste_tc_end_audio;
+    private List<Timecode> liste_tc_end_audio;
 
     /**
      * Si le média vidéo est activé dans la timeline.
      */
-    private ArrayList<Boolean> liste_active_video;
+    private List<Boolean> liste_active_video;
 
     /**
      * Si le média vidéo est activé dans la timeline.
      */
-    private ArrayList<Boolean> liste_active_audio;
+    private List<Boolean> liste_active_audio;
 
     /**
      * Liste des marqueurs dans la timeline
      */
-    private ArrayList<Marqueur> liste_marqueur;
+    private List<Marqueur> liste_marqueur;
 
     /**
      * La fin de la piste vidéo.
      */
-    private HashMap<Integer, Integer> fin_piste_video;
+    private Map<Integer, Integer> fin_piste_video;
 
     /**
      * La fin de la piste vidéo.
      */
-    private HashMap<Integer, Integer> fin_piste_audio;
+    private Map<Integer, Integer> fin_piste_audio;
 
     /**
      * Liste des pistes vidéos à verrouiller.
      */
-    private ArrayList<Integer> liste_piste_video_verrouiller;
+    private List<Integer> liste_piste_video_verrouiller;
 
     /**
      * Liste des pistes audio à verrouiller.
      */
-    private ArrayList<Integer> liste_piste_audio_verrouiller;
+    private List<Integer> liste_piste_audio_verrouiller;
 
     /**
      * Quand on veut verrouiller toutes les pistes vidéos.
@@ -346,7 +348,7 @@ public final class Timeline {
      */
     public void addMedia(int piste, Media media, Timecode in, Timecode out, boolean active) {
         // Pour l'image :
-        if (media instanceof MediaVideo) {
+        if (media instanceof MediaVideo mediaVideo) {
             // Pas de superposition (seulement si trié) :
             while (this.fin_piste_video.containsKey(piste) && (in.toImage() <= this.fin_piste_video.get(piste))) {
                 piste++;
@@ -385,7 +387,7 @@ public final class Timeline {
             this.liste_tc_start_video.add(in);
             this.liste_tc_end_video.add(out);
 
-            conformiteMedia((MediaVideo) media);
+            conformiteMedia(mediaVideo);
         } // Pour les audios :
         else {
             // Pas de superposition (seulement si trié) :
@@ -580,8 +582,8 @@ public final class Timeline {
                     + "\t\t\t\t\t\t\t<name>" + m.getNomFichier() + "</name>\n";
 
             MediaTexte m_texte;
-            if (m instanceof MediaTexte) {
-                m_texte = (MediaTexte) m;
+            if (m instanceof MediaTexte mediaText) {
+                m_texte = mediaText;
             } else {
                 m_texte = null;
             }
@@ -643,7 +645,7 @@ public final class Timeline {
             }
 
             // Ajoute les effets sur le média :
-            ArrayList<Effect> liste_effet = m.getListeEffect();
+            List<Effect> liste_effet = m.getListeEffect();
 
             for (Effect effet : liste_effet) {
                 xml += effet.toString();
@@ -712,8 +714,8 @@ public final class Timeline {
         } // En cas de fichier généré :
         else {
             // Pour un fichier de texte :
-            if (m instanceof MediaTexte) {
-                MediaTexte m_texte = (MediaTexte) m;
+            if (m instanceof MediaTexte mediaText) {
+                MediaTexte m_texte = mediaText;
 
                 // Texte d'Adobe CC2023 :
                 xml += "\t\t\t\t\t\t<filter>\n"
@@ -1343,7 +1345,7 @@ public final class Timeline {
                 + "\t\t\t\t\t</samplecharacteristics>\n"
                 + "\t\t\t\t</format>\n";
 
-        ArrayList<Integer> num_piste = new ArrayList<>();
+        List<Integer> num_piste = new ArrayList<>();
         int max = 0;
 
         for (Integer piste_video : this.liste_piste_video) {
@@ -1364,8 +1366,8 @@ public final class Timeline {
             for (int j = 0; j < this.liste_piste_video.size(); j++) {
                 // Piste actuelle :
                 if (this.liste_piste_video.get(j) == i) {
-                    if (this.liste_media_video.get(j) instanceof MediaVideo) {
-                        xml += this.addItemClipVideo((MediaVideo) this.liste_media_video.get(j), this.liste_tc_start_video.get(j), this.liste_active_video.get(j));
+                    if (this.liste_media_video.get(j) instanceof MediaVideo mediaVideo) {
+                        xml += this.addItemClipVideo(mediaVideo, this.liste_tc_start_video.get(j), this.liste_active_video.get(j));
                     }
                 }
             }
@@ -1390,7 +1392,7 @@ public final class Timeline {
                 + this.outputGroupe(this.nombre_canaux)
                 + "\t\t\t\t</outputs>\n";
 
-        ArrayList<Integer> num_piste_audio = new ArrayList<>();
+        List<Integer> num_piste_audio = new ArrayList<>();
         int max_audio = 0;
 
         for (Integer piste_audio : this.liste_piste_audio) {
@@ -1420,8 +1422,8 @@ public final class Timeline {
             for (int j = 0; j < this.liste_piste_audio.size(); j++) {
                 // Piste actuelle :
                 if (this.liste_piste_audio.get(j) == i) {
-                    if (this.liste_media_audio.get(j) instanceof MediaAudio) {
-                        xml += this.addItemClipAudio((MediaAudio) this.liste_media_audio.get(j), i, this.liste_tc_start_audio.get(j), this.liste_active_audio.get(j));
+                    if (this.liste_media_audio.get(j) instanceof MediaAudio mediaAudio) {
+                        xml += this.addItemClipAudio(mediaAudio, i, this.liste_tc_start_audio.get(j), this.liste_active_audio.get(j));
                     }
                 }
             }

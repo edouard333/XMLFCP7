@@ -6,6 +6,7 @@ module com.phenix.xmlfcp7 {
     requires jakarta.validation;
 
     exports com.phenix.xmlfcp7;
-    exports com.phenix.xmlfcp7.enums;
     exports com.phenix.xmlfcp7.effect;
+    exports com.phenix.xmlfcp7.enums;
+    exports com.phenix.xmlfcp7.exception;
 }

@@ -8,6 +8,7 @@ import com.phenix.xmlfcp7.enums.Trame;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Media dans un projet.
@@ -102,7 +103,7 @@ public class Media {
      *
      */
     @NotNull
-    private final ArrayList<Effect> liste_effet;
+    private final List<Effect> liste_effet;
 
     /**
      * Définit un média sur base de son nom de fichier.
@@ -287,7 +288,7 @@ public class Media {
      *
      * @param balayage Le balayage.
      * @param trame Si entrelacé, on indique la trame, sinon utiliser
-     * {@link Trame#AUCUNE AUCUNE}.
+     * {@link Trame#AUCUNE Trame.AUCUNE}.
      */
     public void setBalayage(Balayage balayage, Trame trame) {
         this.balayage = balayage;
@@ -344,7 +345,7 @@ public class Media {
      * @return Liste des effets.
      */
     @NotNull
-    public ArrayList<Effect> getListeEffect() {
+    public List<Effect> getListeEffect() {
         return this.liste_effet;
     }
 
