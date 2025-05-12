@@ -43,7 +43,7 @@ public final class Lumetri extends Effect {
     @NotNull
     @NotBlank
     @Override
-    public String toString() {
+    public String toFCP7XML() {
         return "<filter>\n"
                 + "<effect>\n"
                 + "	<name></name>\n"

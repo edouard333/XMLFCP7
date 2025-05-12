@@ -59,30 +59,30 @@ public final class XMLFCP7 {
     /**
      * Nom du projet.
      */
-    private String titre_projet;
+    private String titreProjet;
 
     /**
      * Liste des médias.
      */
     @NotNull
-    private final List<Media> liste_media;
+    private final List<Media> listeMedia;
 
     /**
      * Liste des timelines.
      */
     @NotNull
-    private final List<Timeline> liste_timeline;
+    private final List<Timeline> listeTimeline;
 
     /**
      * Liste des dossiers.
      */
     @NotNull
-    private final List<Dossier> liste_dossier;
+    private final List<Dossier> listeDossier;
 
     /**
      * L'XML est destiné à quel logiciel.
      */
-    private Logiciel logiciel_destination;
+    private Logiciel logicielDestination;
 
     /**
      * Construit un {@link XMLFCP7}.
@@ -99,19 +99,19 @@ public final class XMLFCP7 {
      *
      * @param fichier Le chemin et nom du fichier.
      * @param mode Si on lit ou écrit l'XML.
-     * @param logiciel_destination Le XML est destiné à quel logiciel.
+     * @param logicielDestination Le XML est destiné à quel logiciel.
      */
-    public XMLFCP7(File fichier, Mode mode, Logiciel logiciel_destination) {
+    public XMLFCP7(File fichier, Mode mode, Logiciel logicielDestination) {
         this.fichier = fichier;
         this.mode = mode;
-        this.logiciel_destination = logiciel_destination;
+        this.logicielDestination = logicielDestination;
 
-        this.liste_media = new ArrayList<Media>();
-        this.liste_timeline = new ArrayList<Timeline>();
-        this.liste_dossier = new ArrayList<Dossier>();
+        this.listeMedia = new ArrayList<Media>();
+        this.listeTimeline = new ArrayList<Timeline>();
+        this.listeDossier = new ArrayList<Dossier>();
 
         // Si on crée un nouvel XML FCP7, alors le nombre de timeline est de 0.
-        Timeline.nombre_timeline = 0;
+        Timeline.nombreTimeline = 0;
     }
 
     /**
@@ -120,7 +120,7 @@ public final class XMLFCP7 {
      * @param dossier Le dossier.
      */
     public void addDossier(Dossier dossier) {
-        this.liste_dossier.add(dossier);
+        this.listeDossier.add(dossier);
     }
 
     /**
@@ -129,7 +129,7 @@ public final class XMLFCP7 {
      * @param audio Média audio.
      */
     public void addMediaAudio(MediaAudio audio) {
-        this.liste_media.add(audio);
+        this.listeMedia.add(audio);
     }
 
     /**
@@ -138,7 +138,7 @@ public final class XMLFCP7 {
      * @param image L'image a ajouter.
      */
     public void addMediaImage(MediaImage image) {
-        this.liste_media.add(image);
+        this.listeMedia.add(image);
     }
 
     /**
@@ -147,7 +147,7 @@ public final class XMLFCP7 {
      * @param video La vidéo à ajouter.
      */
     public void addMediaVideo(MediaVideo video) {
-        this.liste_media.add(video);
+        this.listeMedia.add(video);
     }
 
     /**
@@ -156,8 +156,8 @@ public final class XMLFCP7 {
      * @param timeline La timeline à ajouter.
      */
     public void addTimeline(Timeline timeline) {
-        timeline.setLogicielDestination(this.logiciel_destination);
-        this.liste_timeline.add(timeline);
+        timeline.setLogicielDestination(this.logicielDestination);
+        this.listeTimeline.add(timeline);
     }
 
     /**
@@ -173,22 +173,22 @@ public final class XMLFCP7 {
             writer.append("<xmeml version=\"4\">\n");
 
             writer.append("\t<project>\n");
-            writer.append("\t\t<name>" + this.titre_projet + "</name>\n");
+            writer.append("\t\t<name>" + this.titreProjet + "</name>\n");
             writer.append("\t\t<children>\n");
 
             // Liste des dossiers :
-            for (Dossier dossier : this.liste_dossier) {
-                writer.append(dossier.toString());
+            for (Dossier dossier : this.listeDossier) {
+                writer.append(dossier.toFCP7XML());
             }
 
             // Liste timeline :
-            for (Timeline timeline : this.liste_timeline) {
-                writer.append(timeline.toString());
+            for (Timeline timeline : this.listeTimeline) {
+                writer.append(timeline.toFCP7XML());
             }
 
             // Liste des médias :
-            for (Media media : this.liste_media) {
-                writer.append(media.toString());
+            for (Media media : this.listeMedia) {
+                writer.append(media.toFCP7XML());
             }
 
             writer.append("\t\t</children>\n");
@@ -212,23 +212,23 @@ public final class XMLFCP7 {
     /**
      * Suffixe donné aux fichiers générés.
      *
-     * @param logiciel_destination En fonction du logiciel de destination le
+     * @param logicielDestination En fonction du logiciel de destination le
      * suffixe est différent.
      *
      * @return Suffixe du fichier.
      */
     @NotNull
     @NotBlank
-    public static String getSuffixeFichier(Logiciel logiciel_destination) {
-        return (logiciel_destination == Logiciel.PREMIERE) ? "PRE" : "RESOLVE";
+    public static String getSuffixeFichier(Logiciel logicielDestination) {
+        return (logicielDestination == Logiciel.PREMIERE) ? "PRE" : "RESOLVE";
     }
 
     /**
      * Modifie le nom du projet.
      *
-     * @param titre_projet Le nouveau titre du projet.
+     * @param titreProjet Le nouveau titre du projet.
      */
-    public void setTitreProjet(String titre_projet) {
-        this.titre_projet = titre_projet;
+    public void setTitreProjet(String titreProjet) {
+        this.titreProjet = titreProjet;
     }
 }

@@ -1,5 +1,6 @@
 package com.phenix.xmlfcp7.enums;
 
+import com.phenix.xmlfcp7.internal.FCP7XMLConvertible;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -8,7 +9,7 @@ import jakarta.validation.constraints.NotNull;
  *
  * @author <a href="mailto:edouard128@hotmail.com">Edouard Jeanjean</a>
  */
-public enum CouleurMedia {
+public enum CouleurMedia implements FCP7XMLConvertible {
 
     /**
      * Couleur "iris"/bleu dans Adobe Premiere.
@@ -28,15 +29,15 @@ public enum CouleurMedia {
      */
     @NotNull
     @NotBlank
-    private final String couleur_premiere;
+    public final String couleurPremiere;
 
     /**
      * Définit une couleur média.
      *
-     * @param couleur_premiere Couleur pour Adobe Premiere.
+     * @param couleurPremiere Couleur pour Adobe Premiere.
      */
-    private CouleurMedia(@NotNull @NotBlank String couleur_premiere) {
-        this.couleur_premiere = couleur_premiere;
+    private CouleurMedia(@NotNull @NotBlank String couleurPremiere) {
+        this.couleurPremiere = couleurPremiere;
     }
 
     /**
@@ -47,7 +48,7 @@ public enum CouleurMedia {
     @NotNull
     @NotBlank
     @Override
-    public String toString() {
-        return this.couleur_premiere;
+    public String toFCP7XML() {
+        return this.couleurPremiere;
     }
 }

@@ -4,6 +4,7 @@ import com.phenix.timecode.Timecode;
 import com.phenix.xmlfcp7.XMLFCP7.Logiciel;
 import com.phenix.xmlfcp7.effect.Effect;
 import com.phenix.xmlfcp7.enums.CouleurMarqueur;
+import com.phenix.xmlfcp7.internal.FCP7XMLConvertible;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.io.File;
@@ -21,7 +22,7 @@ import java.util.UUID;
  *
  * @author <a href="mailto:edouard128@hotmail.com">Edouard Jeanjean</a>
  */
-public final class Timeline {
+public final class Timeline implements FCP7XMLConvertible {
 
     /**
      * Le nom de la timeline.
@@ -31,7 +32,7 @@ public final class Timeline {
     /**
      * Le timecode de début de la timeline.
      */
-    private Timecode start_tc;
+    private Timecode startTc;
 
     /**
      * Framerate de la timeline.
@@ -61,12 +62,12 @@ public final class Timeline {
     /**
      * ID de la timeline instancé.
      */
-    private int numero_timeline;
+    private int numeroTimeline;
 
     /**
      * Cette variable sert à savoir combien de timeline ont été faite.
      */
-    public static int nombre_timeline = 0;
+    public static int nombreTimeline = 0;
 
     /**
      * Liste des UUID pour rendre unique une timeline.<br>
@@ -94,102 +95,102 @@ public final class Timeline {
     /**
      * Nombre de canaux audio.
      */
-    private int nombre_canaux;
+    private int nombreCanaux;
 
     /**
      * Liste des pistes vidéo dans la timeline.
      */
-    private List<Integer> liste_piste_video;
+    private List<Integer> listePisteVideo;
 
     /**
      * Liste des pistes audio dans la timeline.
      */
-    private List<Integer> liste_piste_audio;
+    private List<Integer> listePisteAudio;
 
     /**
      * Liste des médias vidéo dans la timeline.
      */
-    private List<Media> liste_media_video;
+    private List<Media> listeMediaVideo;
 
     /**
      * Liste des médias audio dans la timeline.
      */
-    private List<Media> liste_media_audio;
+    private List<Media> listeMediaAudio;
 
     /**
      * TC start du média vidéo dans la timeline.
      */
-    private List<Timecode> liste_tc_start_video;
+    private List<Timecode> listeTcStartVideo;
 
     /**
      * TC start du média audio dans la timeline.
      */
-    private List<Timecode> liste_tc_start_audio;
+    private List<Timecode> listeTcStartAudio;
 
     /**
      * TC end du média vidéo dans la timeline.
      */
-    private List<Timecode> liste_tc_end_video;
+    private List<Timecode> listeTcEndVideo;
 
     /**
      * TC end du média audio dans la timeline.
      */
-    private List<Timecode> liste_tc_end_audio;
+    private List<Timecode> listeTcEndAudio;
 
     /**
      * Si le média vidéo est activé dans la timeline.
      */
-    private List<Boolean> liste_active_video;
+    private List<Boolean> listeActiveVideo;
 
     /**
      * Si le média vidéo est activé dans la timeline.
      */
-    private List<Boolean> liste_active_audio;
+    private List<Boolean> listeActiveAudio;
 
     /**
      * Liste des marqueurs dans la timeline
      */
-    private List<Marqueur> liste_marqueur;
+    private List<Marqueur> listeMarqueur;
 
     /**
      * La fin de la piste vidéo.
      */
-    private Map<Integer, Integer> fin_piste_video;
+    private Map<Integer, Integer> finPisteVideo;
 
     /**
      * La fin de la piste vidéo.
      */
-    private Map<Integer, Integer> fin_piste_audio;
+    private Map<Integer, Integer> finPisteAudio;
 
     /**
      * Liste des pistes vidéos à verrouiller.
      */
-    private List<Integer> liste_piste_video_verrouiller;
+    private List<Integer> listePisteVideoVerrouiller;
 
     /**
      * Liste des pistes audio à verrouiller.
      */
-    private List<Integer> liste_piste_audio_verrouiller;
+    private List<Integer> listePisteAudioVerrouiller;
 
     /**
      * Quand on veut verrouiller toutes les pistes vidéos.
      */
-    private boolean verrouiller_piste_video;
+    private boolean verrouillerPisteVideo;
 
     /**
      * Quand on veut verrouiller toutes les pistes audio.
      */
-    private boolean verrouiller_piste_audio;
+    private boolean verrouillerPisteAudio;
 
     /**
      * Définit la timeline est pour quel logiciel.
      */
-    private Logiciel logiciel_destination;
+    private Logiciel logicielDestination;
 
     /**
      * Position du curseur dans la timeline.
      */
-    private int position_curseur;
+    private int positionCurseur;
 
     /**
      * Crée une timeline avec toutes les données par défaut.
@@ -222,42 +223,42 @@ public final class Timeline {
      *
      * @param nom Nom de la timeline.
      * @param framerate Framerate de la timeline.
-     * @param start_tc Timecode début de la timeline.
+     * @param startTc Timecode début de la timeline.
      */
-    public Timeline(String nom, int framerate, Timecode start_tc) {
+    public Timeline(String nom, int framerate, Timecode startTc) {
         this.nom = nom;
         this.framerate = framerate;
-        this.start_tc = start_tc;
+        this.startTc = startTc;
         this.par = 1;
-        this.position_curseur = 0; // Par défaut, le curseur est au début de la timeline.
+        this.positionCurseur = 0; // Par défaut, le curseur est au début de la timeline.
 
-        this.nombre_canaux = 2;
+        this.nombreCanaux = 2;
 
-        this.verrouiller_piste_video = false;
-        this.verrouiller_piste_audio = false;
+        this.verrouillerPisteVideo = false;
+        this.verrouillerPisteAudio = false;
 
         // Par défaut c'est pour Adobe Premiere.
-        this.logiciel_destination = XMLFCP7.Logiciel.PREMIERE;
+        this.logicielDestination = XMLFCP7.Logiciel.PREMIERE;
 
         // Initialise les valeurs dans le constructeur et non dans la classe.
-        this.liste_piste_video = new ArrayList<Integer>();
-        this.liste_piste_audio = new ArrayList<Integer>();
-        this.liste_media_video = new ArrayList<Media>();
-        this.liste_media_audio = new ArrayList<Media>();
-        this.liste_tc_start_video = new ArrayList<Timecode>();
-        this.liste_tc_start_audio = new ArrayList<Timecode>();
-        this.liste_tc_end_video = new ArrayList<Timecode>();
-        this.liste_tc_end_audio = new ArrayList<Timecode>();
-        this.liste_active_video = new ArrayList<Boolean>();
-        this.liste_active_audio = new ArrayList<Boolean>();
-        this.liste_marqueur = new ArrayList<Marqueur>();
-        this.fin_piste_video = new HashMap<Integer, Integer>();
-        this.fin_piste_audio = new HashMap<Integer, Integer>();
-        this.liste_piste_video_verrouiller = new ArrayList<Integer>(10);
-        this.liste_piste_audio_verrouiller = new ArrayList<Integer>(4);
+        this.listePisteVideo = new ArrayList<Integer>();
+        this.listePisteAudio = new ArrayList<Integer>();
+        this.listeMediaVideo = new ArrayList<Media>();
+        this.listeMediaAudio = new ArrayList<Media>();
+        this.listeTcStartVideo = new ArrayList<Timecode>();
+        this.listeTcStartAudio = new ArrayList<Timecode>();
+        this.listeTcEndVideo = new ArrayList<Timecode>();
+        this.listeTcEndAudio = new ArrayList<Timecode>();
+        this.listeActiveVideo = new ArrayList<Boolean>();
+        this.listeActiveAudio = new ArrayList<Boolean>();
+        this.listeMarqueur = new ArrayList<Marqueur>();
+        this.finPisteVideo = new HashMap<Integer, Integer>();
+        this.finPisteAudio = new HashMap<Integer, Integer>();
+        this.listePisteVideoVerrouiller = new ArrayList<Integer>(10);
+        this.listePisteAudioVerrouiller = new ArrayList<Integer>(4);
 
-        this.numero_timeline = nombre_timeline;
-        nombre_timeline++;
+        this.numeroTimeline = nombreTimeline;
+        nombreTimeline++;
     }
 
     /**
@@ -266,7 +267,7 @@ public final class Timeline {
      * @param marqueur Le marqueur.
      */
     public void addMarqueur(Marqueur marqueur) {
-        this.liste_marqueur.add(marqueur);
+        this.listeMarqueur.add(marqueur);
     }
 
     /**
@@ -280,21 +281,23 @@ public final class Timeline {
         String xml = "\t\t\t<marker>\n";
         xml += "\t\t\t\t<name>" + marqueur.getNom() + "</name>\n";
         xml += "\t\t\t\t<comment>" + marqueur.getNote() + "</comment>\n";
-        xml += "\t\t\t\t<in>" + (marqueur.getIn().toImage() - this.start_tc.toImage()) + "</in>\n";
-        xml += "\t\t\t\t<out>" + ((marqueur.getOut() == null || marqueur.getIn().toString().equals(marqueur.getOut().toString())) ? "-1" : (marqueur.getOut().toImage() - this.start_tc.toImage() + 1)) + "</out>\n";
+        xml += "\t\t\t\t<in>" + (marqueur.getIn().toImage() - this.startTc.toImage()) + "</in>\n";
+        xml += "\t\t\t\t<out>" + ((marqueur.getOut() == null || marqueur.getIn().toString().equals(marqueur.getOut().toString())) ? "-1" : (marqueur.getOut().toImage() - this.startTc.toImage() + 1)) + "</out>\n";
 
         if (marqueur.getCouleur() != null) {
-            if (this.logiciel_destination == XMLFCP7.Logiciel.PREMIERE) {
+            CouleurMarqueur couleur = marqueur.getCouleur();
+
+            if (this.logicielDestination == XMLFCP7.Logiciel.PREMIERE) {
                 // Le vert étant le par défaut, on ne l'affiche pas.
-                if (marqueur.getCouleur() != CouleurMarqueur.VERT) {
-                    xml += "\t\t\t\t<pproColor>" + marqueur.getCouleur().getCouleurPremiere() + "</pproColor>\n";
+                if (couleur != CouleurMarqueur.VERT) {
+                    xml += "\t\t\t\t<pproColor>" + couleur.couleurPremiere + "</pproColor>\n";
                 }
             } else {
                 xml += "\t\t\t\t<color>\n";
-                xml += "\t\t\t\t\t<alpha>" + marqueur.getCouleur().getCanalAlpha() + "</alpha>\n";
-                xml += "\t\t\t\t\t<red>" + marqueur.getCouleur().getCanalRouge() + "</red>\n";
-                xml += "\t\t\t\t\t<green>" + marqueur.getCouleur().getCanalVert() + "</green>\n";
-                xml += "\t\t\t\t\t<blue>" + marqueur.getCouleur().getCanalBleu() + "</blue>\n";
+                xml += "\t\t\t\t\t<alpha>" + couleur.canalAlpha + "</alpha>\n";
+                xml += "\t\t\t\t\t<red>" + couleur.canalRouge + "</red>\n";
+                xml += "\t\t\t\t\t<green>" + couleur.canalVert + "</green>\n";
+                xml += "\t\t\t\t\t<blue>" + couleur.canalBleu + "</blue>\n";
                 xml += "\t\t\t\t</color>\n";
             }
         }
@@ -309,7 +312,7 @@ public final class Timeline {
      * @param media Le média.
      */
     public void addMedia(Media media) {
-        this.addMedia(1, media, this.start_tc, new Timecode(this.start_tc.toImage() + media.getDuree().toImage(), media.getFramerate()), true);
+        this.addMedia(1, media, this.startTc, new Timecode(this.startTc.toImage() + media.getDuree().toImage(), media.getFramerate()), true);
     }
 
     /**
@@ -350,25 +353,25 @@ public final class Timeline {
         // Pour l'image :
         if (media instanceof MediaVideo mediaVideo) {
             // Pas de superposition (seulement si trié) :
-            while (this.fin_piste_video.containsKey(piste) && (in.toImage() <= this.fin_piste_video.get(piste))) {
+            while (this.finPisteVideo.containsKey(piste) && (in.toImage() <= this.finPisteVideo.get(piste))) {
                 piste++;
             }
 
-            this.liste_piste_video.add(piste);
-            this.liste_active_video.add(active);
+            this.listePisteVideo.add(piste);
+            this.listeActiveVideo.add(active);
 
             // S'il y a une nouvelle piste, on l'ajoute :
-            if (!this.fin_piste_video.containsKey(piste)) {
-                this.fin_piste_video.put(piste, out.toImage());
+            if (!this.finPisteVideo.containsKey(piste)) {
+                this.finPisteVideo.put(piste, out.toImage());
             } // Sinon, on met à jour le Tc end :
             else {
                 // Et si le TC out et plus grand que le tc de fin de la piste :
-                if (this.fin_piste_video.get(piste) < out.toImage()) {
-                    this.fin_piste_video.replace(piste, out.toImage());
+                if (this.finPisteVideo.get(piste) < out.toImage()) {
+                    this.finPisteVideo.replace(piste, out.toImage());
                 }
             }
 
-            this.liste_media_video.add(media);
+            this.listeMediaVideo.add(media);
 
             if (this.framerate != 0) {
                 in.setFramerate(this.framerate);
@@ -384,32 +387,32 @@ public final class Timeline {
                 this.framerate = (int) out.getFramerate();
             }
 
-            this.liste_tc_start_video.add(in);
-            this.liste_tc_end_video.add(out);
+            this.listeTcStartVideo.add(in);
+            this.listeTcEndVideo.add(out);
 
             conformiteMedia(mediaVideo);
         } // Pour les audios :
         else {
             // Pas de superposition (seulement si trié) :
-            while (this.fin_piste_audio.containsKey(piste) && (in.toImage() <= this.fin_piste_audio.get(piste))) {
+            while (this.finPisteAudio.containsKey(piste) && (in.toImage() <= this.finPisteAudio.get(piste))) {
                 piste++;
             }
 
-            this.liste_piste_audio.add(piste);
-            this.liste_active_audio.add(active);
+            this.listePisteAudio.add(piste);
+            this.listeActiveAudio.add(active);
 
             // S'il y a une nouvelle piste, on l'ajoute :
-            if (!this.fin_piste_audio.containsKey(piste)) {
-                this.fin_piste_audio.put(piste, out.toImage());
+            if (!this.finPisteAudio.containsKey(piste)) {
+                this.finPisteAudio.put(piste, out.toImage());
             } // Sinon, on met à jour le Tc end :
             else {
                 // Et si le TC out et plus grand que le tc de fin de la piste :
-                if (this.fin_piste_audio.get(piste) < out.toImage()) {
-                    this.fin_piste_audio.replace(piste, out.toImage());
+                if (this.finPisteAudio.get(piste) < out.toImage()) {
+                    this.finPisteAudio.replace(piste, out.toImage());
                 }
             }
 
-            this.liste_media_audio.add(media);
+            this.listeMediaAudio.add(media);
 
             if (this.framerate != 0) {
                 in.setFramerate(this.framerate);
@@ -425,8 +428,8 @@ public final class Timeline {
                 this.framerate = (int) out.getFramerate();
             }
 
-            this.liste_tc_start_audio.add(in);
-            this.liste_tc_end_audio.add(out);
+            this.listeTcStartAudio.add(in);
+            this.listeTcEndAudio.add(out);
         }
     }
 
@@ -443,21 +446,21 @@ public final class Timeline {
         clipitem++;
 
         // On définit à quel logiciel est destiné ce média vidéo.
-        m.setLogicielDestination(logiciel_destination);
+        m.setLogicielDestination(logicielDestination);
 
-        String nom_fichier = new File(m.getNomFichier().replace("\\", "/")).getName();
+        String nomFichier = new File(m.getNomFichier().replace("\\", "/")).getName();
 
         String xml = "\t\t\t\t\t<clipitem id=\"clipitem-" + clipitem + "\">\n"
                 + "\t\t\t\t\t\t<masterclipid>masterclip-" + m.getId() + "</masterclipid>\n"
-                + "\t\t\t\t\t\t<name>" + (m.getNom() != null ? m.getNom() : nom_fichier) + "</name>\n"
+                + "\t\t\t\t\t\t<name>" + (m.getNom() != null ? m.getNom() : nomFichier) + "</name>\n"
                 + "\t\t\t\t\t\t<enabled>" + ((active) ? "TRUE" : "FALSE") + "</enabled>\n"
                 + "\t\t\t\t\t\t<duration>" + m.getDuree().toImage() + "</duration>\n"
                 + "\t\t\t\t\t\t<rate>\n"
                 + "\t\t\t\t\t\t\t<timebase>" + m.getFramerate() + "</timebase>\n"
                 + "\t\t\t\t\t\t\t<ntsc>FALSE</ntsc>\n"
                 + "\t\t\t\t\t\t</rate>\n"
-                + "\t\t\t\t\t\t<start>" + (start.toImage() - this.start_tc.toImage()) + "</start>\n"
-                + "\t\t\t\t\t\t<end>" + ((start.toImage() - this.start_tc.toImage() + m.getDuree().toImage()) - ((m.getDuree().toImage() > 1) ? 1 : 0)) + "</end>\n"
+                + "\t\t\t\t\t\t<start>" + (start.toImage() - this.startTc.toImage()) + "</start>\n"
+                + "\t\t\t\t\t\t<end>" + ((start.toImage() - this.startTc.toImage() + m.getDuree().toImage()) - ((m.getDuree().toImage() > 1) ? 1 : 0)) + "</end>\n"
                 + // "-1" car sinon cela ajoute une frame.
                 "\t\t\t\t\t\t<in>" + m.getIn().toImage() + "</in>\n"
                 + "\t\t\t\t\t\t<out>" + (m.getOut().toImage()) + "</out>\n"
@@ -465,11 +468,11 @@ public final class Timeline {
                 + // Je sais plus.
                 "\t\t\t\t\t\t<pproTicksOut>" + (m.getOut().toImage() * 254016000000L / this.framerate) + "</pproTicksOut>\n"; // Je sais plus.
         /*if (!(m instanceof MediaTexte)) {
-            xml += "\t\t\t\t\t\t<alphatype>"+m.getAlpha().getMethode()+"</alphatype>\n";
+            xml += "\t\t\t\t\t\t<alphatype>"+m.getAlpha().toFCP7XML()+"</alphatype>\n";
         } else {
             xml += "\t\t\t\t\t\t<alphatype>straight</alphatype>\n";
         }*/
-        xml += "\t\t\t\t\t\t<alphatype>" + m.getAlpha() + "</alphatype>\n"
+        xml += "\t\t\t\t\t\t<alphatype>" + m.getAlpha().toFCP7XML() + "</alphatype>\n"
                 + "\t\t\t\t\t\t<pixelaspectratio>square</pixelaspectratio>\n"
                 + "\t\t\t\t\t\t<anamorphic>FALSE</anamorphic>\n";
 
@@ -477,9 +480,9 @@ public final class Timeline {
         if (!m.getTypeMedia().equals("genere")) {
             if (!m.dejaUtilise()) {
                 // Si le logiciel est Adobe Premiere :
-                if (this.logiciel_destination == Logiciel.PREMIERE) {
+                if (this.logicielDestination == Logiciel.PREMIERE) {
                     xml += "\t\t\t\t\t\t<file id=\"file-" + m.getId() + "\">\n"
-                            + "\t\t\t\t\t\t\t<name>" + nom_fichier + "</name>\n"
+                            + "\t\t\t\t\t\t\t<name>" + nomFichier + "</name>\n"
                             + "\t\t\t\t\t\t\t<pathurl>" + m.getLocalisation() + "</pathurl>\n"
                             + // Où se trouve le fichier.
                             "\t\t\t\t\t\t\t<rate>\n"
@@ -521,7 +524,7 @@ public final class Timeline {
                             + "\t\t\t\t\t\t\t\t\t\t<height>" + m.getHauteur() + "</height>\n"
                             + "\t\t\t\t\t\t\t\t\t\t<anamorphic>FALSE</anamorphic>\n"
                             + "\t\t\t\t\t\t\t\t\t\t<pixelaspectratio>square</pixelaspectratio>\n"
-                            + "\t\t\t\t\t\t\t\t\t\t<fielddominance>" + ((MediaVideo) m).getTrame() + "</fielddominance>\n"
+                            + "\t\t\t\t\t\t\t\t\t\t<fielddominance>" + ((MediaVideo) m).getTrame().toFCP7XML() + "</fielddominance>\n"
                             + "\t\t\t\t\t\t\t\t\t</samplecharacteristics>\n"
                             + "\t\t\t\t\t\t\t\t</video>\n";
                     //xml += "\t</media>\n"
@@ -534,7 +537,7 @@ public final class Timeline {
                             + "\t\t\t\t\t\t\t\t<timebase>" + m.getFramerate() + "</timebase>\n"
                             + "\t\t\t\t\t\t\t\t<ntsc>false</ntsc>\n"
                             + "\t\t\t\t\t\t\t</rate>\n"
-                            + "\t\t\t\t\t\t\t<name>" + nom_fichier + "</name>\n"
+                            + "\t\t\t\t\t\t\t<name>" + nomFichier + "</name>\n"
                             + "\t\t\t\t\t\t\t<pathurl>" + /*new File(m.getLocalisation().replace("\\", "/")).getName()*/ m.getLocalisation() + "</pathurl>\n"
                             + "\t\t\t\t\t\t\t<timecode>\n"
                             + "\t\t\t\t\t\t\t\t<string>" + m.getStart() + "</string>\n"
@@ -581,15 +584,15 @@ public final class Timeline {
             xml += "\t\t\t\t\t\t<file id=\"genere-" + m.getId() + "\">\n"
                     + "\t\t\t\t\t\t\t<name>" + m.getNomFichier() + "</name>\n";
 
-            MediaTexte m_texte;
+            MediaTexte mTexte;
             if (m instanceof MediaTexte mediaText) {
-                m_texte = mediaText;
+                mTexte = mediaText;
             } else {
-                m_texte = null;
+                mTexte = null;
             }
 
             if (m instanceof MediaTexte) {
-                xml += "\t\t\t\t\t\t\t<mediaSource>" + m_texte.getMediaSource() + "</mediaSource>\n";
+                xml += "\t\t\t\t\t\t\t<mediaSource>" + mTexte.getMediaSource() + "</mediaSource>\n";
             }
 
             xml += "\t\t\t\t\t\t\t<rate>\n"
@@ -640,21 +643,21 @@ public final class Timeline {
                     + "\t\t\t\t\t\t</link>\n";
 
             // DaVinci Resolve indique le mode composition.
-            if (this.logiciel_destination == Logiciel.RESOLVE) {
+            if (this.logicielDestination == Logiciel.RESOLVE) {
                 xml += "\t\t\t\t\t\t<compositemode>normal</compositemode>\n";
             }
 
             // Ajoute les effets sur le média :
-            List<Effect> liste_effet = m.getListeEffect();
+            List<Effect> listeEffet = m.getListeEffect();
 
-            for (Effect effet : liste_effet) {
-                xml += effet.toString();
+            for (Effect effet : listeEffet) {
+                xml += effet.toFCP7XML();
             }
 
             // Cas quand il y a un déplacement :
             xml += "\t\t\t\t\t\t<filter>\n";
 
-            if (this.logiciel_destination == Logiciel.RESOLVE) {
+            if (this.logicielDestination == Logiciel.RESOLVE) {
                 xml += "\t\t\t\t\t\t\t<enabled>TRUE</enabled>\n"
                         + "\t\t\t\t\t\t\t<start>" + m.getStart().toImage() + "</start>\n"
                         + "\t\t\t\t\t\t\t<end>" + m.getStart().toImage() + m.getDuree().toImage() + "</end>\n";
@@ -688,7 +691,7 @@ public final class Timeline {
                     + "\t\t\t\t\t\t\t\t\t<name>Center</name>\n"
                     + "\t\t\t\t\t\t\t\t\t<value>\n";
             // Position en X : 0 = centre.
-            if (this.logiciel_destination == Logiciel.PREMIERE) {
+            if (this.logicielDestination == Logiciel.PREMIERE) {
                 xml += "\t\t\t\t\t\t\t\t\t\t<horiz>" + new DecimalFormat("#.#########", new DecimalFormatSymbols(Locale.ENGLISH)).format(m.getPositionHorizontale(this.largeur, this.hauteur, this.par)) + "</horiz>\n";
                 xml += "\t\t\t\t\t\t\t\t\t\t<vert>" + new DecimalFormat("#.#########", new DecimalFormatSymbols(Locale.ENGLISH)).format(m.getPositionVerticale(this.largeur, this.hauteur, this.par)) + "</vert>\n";
             } else {
@@ -715,12 +718,12 @@ public final class Timeline {
         else {
             // Pour un fichier de texte :
             if (m instanceof MediaTexte mediaText) {
-                MediaTexte m_texte = mediaText;
+                MediaTexte mTexte = mediaText;
 
                 // Texte d'Adobe CC2023 :
                 xml += "\t\t\t\t\t\t<filter>\n"
                         + "\t\t\t\t\t\t\t<effect>\n"
-                        + "\t\t\t\t\t\t\t\t<name>" + m_texte.getTexte() + "</name>\n"
+                        + "\t\t\t\t\t\t\t\t<name>" + mTexte.getTexte() + "</name>\n"
                         + "\t\t\t\t\t\t\t\t<effectid>GraphicAndType</effectid>\n"
                         + "\t\t\t\t\t\t\t\t<effectcategory>graphic</effectcategory>\n"
                         + "\t\t\t\t\t\t\t\t<effecttype>filter</effecttype>\n"
@@ -921,7 +924,7 @@ public final class Timeline {
         }
 
         // Il se peut que cela soit une image et non une vidéo qu'on doit freezer.
-        if (this.logiciel_destination == XMLFCP7.Logiciel.RESOLVE && m.isFreeze()) {
+        if (this.logicielDestination == XMLFCP7.Logiciel.RESOLVE && m.isFreeze()) {
             xml += "\t\t\t\t\t\t<filter>\n";
             xml += "\t\t\t\t\t\t\t<enabled>TRUE</enabled>\n";
             xml += "\t\t\t\t\t\t\t<start>-1</start>\n";
@@ -1011,7 +1014,7 @@ public final class Timeline {
                 + "\t\t\t\t\t\t</colorinfo>\n"
                 + "\t\t\t\t\t\t<labels>\n"
                 //+ "\t\t\t\t\t\t\t<label>Meilleure prise</label>\n"
-                + "\t\t\t\t\t\t\t<label2>" + m.getCouleur() + "</label2>\n"
+                + "\t\t\t\t\t\t\t<label2>" + m.getCouleur().toFCP7XML() + "</label2>\n"
                 + "\t\t\t\t\t\t</labels>\n"
                 + "\t\t\t\t\t</clipitem>\n";
         return xml;
@@ -1062,7 +1065,7 @@ public final class Timeline {
                 + "\t\t\t\t\t\t</labels>\n"
                 + "\t\t\t\t\t</clipitem>\n";*/
 
-        String nom_fichier = new File(m.getNomFichier().replace("\\", "/")).getName();
+        String nomFichier = new File(m.getNomFichier().replace("\\", "/")).getName();
 
         String xml = "\t\t\t\t\t<clipitem id=\"clipitem-" + clipitem + "\" premiereChannelType=\"mono\">\n"
                 + "\t\t\t\t\t\t<masterclipid>masterclip-" + m.getId() + "</masterclipid>\n"
@@ -1080,7 +1083,7 @@ public final class Timeline {
                 + "\t\t\t\t\t\t<pproTicksIn>0</pproTicksIn>\n"
                 + "\t\t\t\t\t\t<pproTicksOut>" + ((m.getOut().toImage() - 1) * 254016000000L / this.framerate) + "</pproTicksOut>\n"
                 + "\t\t\t\t\t\t<file id=\"file-" + m.getId() + "\">\n"
-                + "\t\t\t\t\t\t\t<name>" + nom_fichier + "</name>\n"
+                + "\t\t\t\t\t\t\t<name>" + nomFichier + "</name>\n"
                 + "\t\t\t\t\t\t\t<pathurl>" + m.getLocalisation() + "</pathurl>\n"
                 + "\t\t\t\t\t\t\t<rate>\n"
                 + "\t\t\t\t\t\t\t\t<timebase>" + m.getFramerate() + "</timebase>\n"
@@ -1221,7 +1224,7 @@ public final class Timeline {
      */
     private void conformiteMedia(MediaVideo media) {
         // On traite une vidéo :
-        /* if (media.getClass().getSimpleName().equals("MediaVideo")) {
+        /* if (media instanceof MediaVideo) {
             if (media.getHauteur() != this.hauteur || media.getLargeur() != this.largeur)
                 System.out.println("Alert : Les dimensions du média sont différents de la timeline.");
 
@@ -1272,7 +1275,7 @@ public final class Timeline {
      * @return Timecode début.
      */
     public Timecode getStartTc() {
-        return this.start_tc;
+        return this.startTc;
     }
 
     /**
@@ -1283,22 +1286,22 @@ public final class Timeline {
     @NotNull
     @NotBlank
     @Override
-    public String toString() {
+    public String toFCP7XML() {
         // Informations générales :
-        String xml = "\t<sequence id=\"sequence-" + (this.numero_timeline + 1) + "\" TL.SQAudioVisibleBase=\"0\" TL.SQVideoVisibleBase=\"0\" ";
+        String xml = "\t<sequence id=\"sequence-" + (this.numeroTimeline + 1) + "\" TL.SQAudioVisibleBase=\"0\" TL.SQVideoVisibleBase=\"0\" ";
         xml += "TL.SQVisibleBaseTime=\"0\" TL.SQAVDividerPosition=\"0.5\" TL.SQHideShyTracks=\"0\" ";
         xml += "TL.SQHeaderWidth=\"236\" Monitor.ProgramZoomOut=\"1461057696000000\" ";
         xml += "Monitor.ProgramZoomIn=\"0\" TL.SQTimePerPixel=\"5.6763479296991362\" ";
-        xml += "MZ.EditLine=\"" + (this.position_curseur * 254016000000L / this.framerate) + "\" MZ.Sequence.PreviewFrameSizeHeight=\"" + this.hauteur + "\" "; // MZ.EditLine = où doit se trouver le marqueur.
+        xml += "MZ.EditLine=\"" + (this.positionCurseur * 254016000000L / this.framerate) + "\" MZ.Sequence.PreviewFrameSizeHeight=\"" + this.hauteur + "\" "; // MZ.EditLine = où doit se trouver le marqueur.
         xml += "MZ.Sequence.PreviewFrameSizeWidth=\"" + this.largeur + "\" MZ.Sequence.AudioTimeDisplayFormat=\"200\" ";
         xml += "MZ.Sequence.PreviewRenderingClassID=\"1061109567\" MZ.Sequence.PreviewRenderingPresetCodec=\"1096172337\" ";
         xml += "MZ.Sequence.PreviewRenderingPresetPath=\"EncoderPresets\\SequencePreview\\9678af98-a7b7-4bdb-b477-7ac9c8df4a4e\\I-Frame Only MPEG.epr\" ";
         xml += "MZ.Sequence.PreviewUseMaxRenderQuality=\"false\" MZ.Sequence.PreviewUseMaxBitDepth=\"false\" ";
         xml += "MZ.Sequence.EditingModeGUID=\"9678af98-a7b7-4bdb-b477-7ac9c8df4a4e\" ";
         xml += "MZ.Sequence.VideoTimeDisplayFormat=\"100\" MZ.WorkOutPoint=\"1461057696000000\" MZ.WorkInPoint=\"0\" ";
-        xml += "MZ.ZeroPoint=\"" + (this.start_tc.toImage() * 254016000000L / this.framerate) + "\" explodedTracks=\"true\">\n";
-        xml += "\t\t<uuid>" + /*LISTE_UUID[numero_timeline]*/ UUID.randomUUID().toString() + "</uuid>\n";
-        xml += "\t\t<duration>" + this.liste_media_video.get(0).getDuree().toImage() + "</duration>\n";
+        xml += "MZ.ZeroPoint=\"" + (this.startTc.toImage() * 254016000000L / this.framerate) + "\" explodedTracks=\"true\">\n";
+        xml += "\t\t<uuid>" + /*LISTE_UUID[numeroTimeline]*/ UUID.randomUUID().toString() + "</uuid>\n";
+        xml += "\t\t<duration>" + this.listeMediaVideo.get(0).getDuree().toImage() + "</duration>\n";
         xml += "\t\t<rate>\n";
         xml += "\t\t\t<timebase>" + this.framerate + "</timebase>\n";
         xml += "\t\t\t<ntsc>FALSE</ntsc>\n";
@@ -1345,16 +1348,16 @@ public final class Timeline {
                 + "\t\t\t\t\t</samplecharacteristics>\n"
                 + "\t\t\t\t</format>\n";
 
-        List<Integer> num_piste = new ArrayList<>();
+        List<Integer> numPiste = new ArrayList<>();
         int max = 0;
 
-        for (Integer piste_video : this.liste_piste_video) {
-            if (!num_piste.contains(piste_video)) {
-                num_piste.add(piste_video);
+        for (Integer pisteVideo : this.listePisteVideo) {
+            if (!numPiste.contains(pisteVideo)) {
+                numPiste.add(pisteVideo);
 
                 // Piste max:
-                if (piste_video > max) {
-                    max = piste_video;
+                if (pisteVideo > max) {
+                    max = pisteVideo;
                 }
             }
         }
@@ -1363,25 +1366,25 @@ public final class Timeline {
         for (int i = 1; i <= max; i++) {
             xml += "\t\t\t\t<track TL.SQTrackShy=\"0\" TL.SQTrackExpandedHeight=\"25\" TL.SQTrackExpanded=\"0\" MZ.TrackTargeted=\"1\">\n";
 
-            for (int j = 0; j < this.liste_piste_video.size(); j++) {
+            for (int j = 0; j < this.listePisteVideo.size(); j++) {
                 // Piste actuelle :
-                if (this.liste_piste_video.get(j) == i) {
-                    if (this.liste_media_video.get(j) instanceof MediaVideo mediaVideo) {
-                        xml += this.addItemClipVideo(mediaVideo, this.liste_tc_start_video.get(j), this.liste_active_video.get(j));
+                if (this.listePisteVideo.get(j) == i) {
+                    if (this.listeMediaVideo.get(j) instanceof MediaVideo mediaVideo) {
+                        xml += this.addItemClipVideo(mediaVideo, this.listeTcStartVideo.get(j), this.listeActiveVideo.get(j));
                     }
                 }
             }
 
             xml += "\t\t\t\t\t<enabled>TRUE</enabled>\n"
                     // Si on verrouille la piste vidéo.
-                    + "\t\t\t\t\t<locked>" + ((this.liste_piste_video_verrouiller.contains(i) || this.verrouiller_piste_video) ? "TRUE" : "FALSE") + "</locked>\n"
+                    + "\t\t\t\t\t<locked>" + ((this.listePisteVideoVerrouiller.contains(i) || this.verrouillerPisteVideo) ? "TRUE" : "FALSE") + "</locked>\n"
                     + "\t\t\t\t</track>\n";
         }
 
         xml += "\t\t\t</video>\n"
                 + // La partie audio de la timeline :
                 "\t\t\t<audio>\n"
-                + "\t\t\t\t<numOutputChannels>" + this.nombre_canaux + "</numOutputChannels>\n"
+                + "\t\t\t\t<numOutputChannels>" + this.nombreCanaux + "</numOutputChannels>\n"
                 + "\t\t\t\t<format>\n"
                 + "\t\t\t\t\t<samplecharacteristics>\n"
                 + "\t\t\t\t\t\t<depth>16</depth>\n"
@@ -1389,29 +1392,29 @@ public final class Timeline {
                 + "\t\t\t\t\t</samplecharacteristics>\n"
                 + "\t\t\t\t</format>\n"
                 + "\t\t\t\t<outputs>\n"
-                + this.outputGroupe(this.nombre_canaux)
+                + this.outputGroupe(this.nombreCanaux)
                 + "\t\t\t\t</outputs>\n";
 
-        List<Integer> num_piste_audio = new ArrayList<>();
-        int max_audio = 0;
+        List<Integer> numPisteAudio = new ArrayList<>();
+        int maxAudio = 0;
 
-        for (Integer piste_audio : this.liste_piste_audio) {
-            if (!num_piste_audio.contains(piste_audio)) {
-                num_piste_audio.add(piste_audio);
+        for (Integer pisteAudio : this.listePisteAudio) {
+            if (!numPisteAudio.contains(pisteAudio)) {
+                numPisteAudio.add(pisteAudio);
 
                 // Piste max:
-                if (piste_audio > max_audio) {
-                    max_audio = piste_audio;
+                if (pisteAudio > maxAudio) {
+                    maxAudio = pisteAudio;
                 }
             }
         }
 
-        if (max_audio < this.nombre_canaux) {
-            max_audio = this.nombre_canaux;
+        if (maxAudio < this.nombreCanaux) {
+            maxAudio = this.nombreCanaux;
         }
 
         // Crée chaque piste audio :
-        for (int i = 1; i <= max_audio; i++) {
+        for (int i = 1; i <= maxAudio; i++) {
             if (i % 2 == 1) {
                 xml += "\t\t\t\t<track monotrack=\"TRUE\" TL.SQTrackAudioKeyframeStyle=\"0\" TL.SQTrackShy=\"0\" TL.SQTrackExpandedHeight=\"25\" TL.SQTrackExpanded=\"0\" MZ.TrackTargeted=\"1\" PannerCurrentValue=\"0\" PannerIsInverted=\"true\" PannerStartKeyframe=\"-91445760000000000,0.,0,0,0,0,0,0\" PannerName=\"Pan\" currentExplodedTrackIndex=\"0\" totalExplodedTrackCount=\"1\" premiereTrackType=\"Mono\">\n";
 
@@ -1419,47 +1422,47 @@ public final class Timeline {
                 xml += "\t\t\t\t<track monotrack=\"TRUE\" TL.SQTrackAudioKeyframeStyle=\"0\" TL.SQTrackShy=\"0\" TL.SQTrackExpandedHeight=\"25\" TL.SQTrackExpanded=\"0\" MZ.TrackTargeted=\"1\" PannerIsInverted=\"true\" PannerName=\"Pan\" currentExplodedTrackIndex=\"0\" totalExplodedTrackCount=\"1\" premiereTrackType=\"Mono\">\n";
             }
 
-            for (int j = 0; j < this.liste_piste_audio.size(); j++) {
+            for (int j = 0; j < this.listePisteAudio.size(); j++) {
                 // Piste actuelle :
-                if (this.liste_piste_audio.get(j) == i) {
-                    if (this.liste_media_audio.get(j) instanceof MediaAudio mediaAudio) {
-                        xml += this.addItemClipAudio(mediaAudio, i, this.liste_tc_start_audio.get(j), this.liste_active_audio.get(j));
+                if (this.listePisteAudio.get(j) == i) {
+                    if (this.listeMediaAudio.get(j) instanceof MediaAudio mediaAudio) {
+                        xml += this.addItemClipAudio(mediaAudio, i, this.listeTcStartAudio.get(j), this.listeActiveAudio.get(j));
                     }
                 }
             }
 
             xml += "\t\t\t\t\t<enabled>TRUE</enabled>\n"
-                    + "\t\t\t\t\t<locked>" + ((this.liste_piste_audio_verrouiller.contains(i) || this.verrouiller_piste_audio) ? "TRUE" : "FALSE") + "</locked>\n"
+                    + "\t\t\t\t\t<locked>" + ((this.listePisteAudioVerrouiller.contains(i) || this.verrouillerPisteAudio) ? "TRUE" : "FALSE") + "</locked>\n"
                     + "\t\t\t\t\t<outputchannelindex>" + i + "</outputchannelindex>\n"
                     + "\t\t\t\t</track>\n";
         }
 
         /*+ "\t\t\t\t<track monotrack=\"TRUE\" TL.SQTrackAudioKeyframeStyle=\"0\" TL.SQTrackShy=\"0\" TL.SQTrackExpandedHeight=\"25\" TL.SQTrackExpanded=\"0\" MZ.TrackTargeted=\"1\" PannerCurrentValue=\"0\" PannerIsInverted=\"true\" PannerStartKeyframe=\"-91445760000000000,0.,0,0,0,0,0,0\" PannerName=\"Pan\" currentExplodedTrackIndex=\"0\" totalExplodedTrackCount=\"1\" premiereTrackType=\"Mono\">\n"
                 + // Si le fichier vidéo a une piste audio, on l'ajoute:
-                ((((MediaVideo) this.liste_media_video.get(0)).getCanaux() >= 1) ? addItemClipAudio((MediaVideo) this.liste_media_video.get(0), 1) : "")
+                ((((MediaVideo) this.listeMediaVideo.get(0)).getCanaux() >= 1) ? addItemClipAudio((MediaVideo) this.listeMediaVideo.get(0), 1) : "")
                 + "\t\t\t\t\t<enabled>TRUE</enabled>\n"
-                + "\t\t\t\t\t<locked>" + ((this.liste_piste_audio_verrouiller.contains(1) || this.verrouiller_piste_audio) ? "TRUE" : "FALSE") + "</locked>\n"
+                + "\t\t\t\t\t<locked>" + ((this.listePisteAudioVerrouiller.contains(1) || this.verrouillerPisteAudio) ? "TRUE" : "FALSE") + "</locked>\n"
                 + "\t\t\t\t\t<outputchannelindex>1</outputchannelindex>\n"
                 + "\t\t\t\t</track>\n"
                 + "\t\t\t\t<track monotrack=\"TRUE\" TL.SQTrackAudioKeyframeStyle=\"0\" TL.SQTrackShy=\"0\" TL.SQTrackExpandedHeight=\"25\" TL.SQTrackExpanded=\"0\" MZ.TrackTargeted=\"1\" PannerIsInverted=\"true\" PannerName=\"Pan\" currentExplodedTrackIndex=\"0\" totalExplodedTrackCount=\"1\" premiereTrackType=\"Mono\">\n"
                 + // Si le fichier vidéo a au moins 2 pistes audio, on l'ajoute:
-                ((((MediaVideo) this.liste_media_video.get(0)).getCanaux() >= 2) ? addItemClipAudio((MediaVideo) this.liste_media_video.get(0), 2) : "")
+                ((((MediaVideo) this.listeMediaVideo.get(0)).getCanaux() >= 2) ? addItemClipAudio((MediaVideo) this.listeMediaVideo.get(0), 2) : "")
                 + "\t\t\t\t\t<enabled>TRUE</enabled>\n"
-                + "\t\t\t\t\t<locked>" + ((this.liste_piste_audio_verrouiller.contains(2) || this.verrouiller_piste_audio) ? "TRUE" : "FALSE") + "</locked>\n"
+                + "\t\t\t\t\t<locked>" + ((this.listePisteAudioVerrouiller.contains(2) || this.verrouillerPisteAudio) ? "TRUE" : "FALSE") + "</locked>\n"
                 + "\t\t\t\t\t<outputchannelindex>2</outputchannelindex>\n"
                 + "\t\t\t\t</track>\n"
                 + "\t\t\t\t<track monotrack=\"TRUE\" TL.SQTrackAudioKeyframeStyle=\"0\" TL.SQTrackShy=\"0\" TL.SQTrackExpandedHeight=\"25\" TL.SQTrackExpanded=\"0\" MZ.TrackTargeted=\"1\" PannerCurrentValue=\"0\" PannerIsInverted=\"true\" PannerStartKeyframe=\"-91445760000000000,0.,0,0,0,0,0,0\" PannerName=\"Pan\" currentExplodedTrackIndex=\"0\" totalExplodedTrackCount=\"1\" premiereTrackType=\"Mono\">\n"
                 + // Si le fichier vidéo a au moins 3 pistes audio, on l'ajoute:
-                ((((MediaVideo) this.liste_media_video.get(0)).getCanaux() >= 3) ? addItemClipAudio((MediaVideo) this.liste_media_video.get(0), 3) : "")
+                ((((MediaVideo) this.listeMediaVideo.get(0)).getCanaux() >= 3) ? addItemClipAudio((MediaVideo) this.listeMediaVideo.get(0), 3) : "")
                 + "\t\t\t\t\t<enabled>TRUE</enabled>\n"
-                + "\t\t\t\t\t<locked>" + ((this.liste_piste_audio_verrouiller.contains(3) || this.verrouiller_piste_audio) ? "TRUE" : "FALSE") + "</locked>\n"
+                + "\t\t\t\t\t<locked>" + ((this.listePisteAudioVerrouiller.contains(3) || this.verrouillerPisteAudio) ? "TRUE" : "FALSE") + "</locked>\n"
                 + "\t\t\t\t\t<outputchannelindex>3</outputchannelindex>\n"
                 + "\t\t\t\t</track>\n"
                 + "\t\t\t\t<track monotrack=\"TRUE\" TL.SQTrackAudioKeyframeStyle=\"0\" TL.SQTrackShy=\"0\" TL.SQTrackExpandedHeight=\"25\" TL.SQTrackExpanded=\"0\" MZ.TrackTargeted=\"1\" PannerIsInverted=\"true\" PannerName=\"Pan\" currentExplodedTrackIndex=\"0\" totalExplodedTrackCount=\"1\" premiereTrackType=\"Mono\">\n"
                 + // Si le fichier vidéo a au moins 4 pistes audio, on l'ajoute:
-                ((((MediaVideo) this.liste_media_video.get(0)).getCanaux() >= 4) ? addItemClipAudio((MediaVideo) this.liste_media_video.get(0), 4) : "")
+                ((((MediaVideo) this.listeMediaVideo.get(0)).getCanaux() >= 4) ? addItemClipAudio((MediaVideo) this.listeMediaVideo.get(0), 4) : "")
                 + "\t\t\t\t\t<enabled>TRUE</enabled>\n"
-                + "\t\t\t\t\t<locked>" + ((this.liste_piste_audio_verrouiller.contains(4) || this.verrouiller_piste_audio) ? "TRUE" : "FALSE") + "</locked>\n"
+                + "\t\t\t\t\t<locked>" + ((this.listePisteAudioVerrouiller.contains(4) || this.verrouillerPisteAudio) ? "TRUE" : "FALSE") + "</locked>\n"
                 + "\t\t\t\t\t<outputchannelindex>4</outputchannelindex>\n"
                 + "\t\t\t\t</track>\n"*/
         xml += "\t\t\t</audio>\n";
@@ -1472,13 +1475,13 @@ public final class Timeline {
         xml += "\t\t\t\t<timebase>" + this.framerate + "</timebase>\n";
         xml += "\t\t\t\t<ntsc>FALSE</ntsc>\n";
         xml += "\t\t\t</rate>\n";
-        xml += "\t\t\t<string>" + this.start_tc + "</string>\n";
-        xml += "\t\t\t<frame>" + this.start_tc.toImage() + "</frame>\n";
+        xml += "\t\t\t<string>" + this.startTc + "</string>\n";
+        xml += "\t\t\t<frame>" + this.startTc.toImage() + "</frame>\n";
         xml += "\t\t\t<displayformat>NDF</displayformat>\n";
         xml += "\t\t</timecode>\n";
 
         // Les marques :
-        for (Marqueur marqueur : this.liste_marqueur) {
+        for (Marqueur marqueur : this.listeMarqueur) {
             xml += this.addMarqueurTimeline(marqueur);
         }
 
@@ -1516,10 +1519,10 @@ public final class Timeline {
     /**
      * Modifie le nombre de canaux audios.
      *
-     * @param nombre_canaux Nombre de canaux audio.
+     * @param nombreCanaux Nombre de canaux audio.
      */
-    public void setCanaux(int nombre_canaux) {
-        this.nombre_canaux = nombre_canaux;
+    public void setCanaux(int nombreCanaux) {
+        this.nombreCanaux = nombreCanaux;
     }
 
     /**
@@ -1536,10 +1539,10 @@ public final class Timeline {
     /**
      * Modifie à quel logiciel est destiné la timeline.
      *
-     * @param logiciel_destination Logiciel auquel est destiné la timeline.
+     * @param logicielDestination Logiciel auquel est destiné la timeline.
      */
-    public void setLogicielDestination(Logiciel logiciel_destination) {
-        this.logiciel_destination = logiciel_destination;
+    public void setLogicielDestination(Logiciel logicielDestination) {
+        this.logicielDestination = logicielDestination;
     }
 
     /**
@@ -1554,10 +1557,10 @@ public final class Timeline {
     /**
      * Définit la position du curseur en image dans la timeline.
      *
-     * @param position_curseur Position en image du curseur.
+     * @param positionCurseur Position en image du curseur.
      */
-    public void setPositionCurseur(int position_curseur) {
-        this.position_curseur = position_curseur;
+    public void setPositionCurseur(int positionCurseur) {
+        this.positionCurseur = positionCurseur;
     }
 
     /**
@@ -1566,13 +1569,13 @@ public final class Timeline {
      * @param startTc Le timecode de début.
      */
     public void setStart(@NotNull Timecode startTc) {
-        this.start_tc = startTc;
+        this.startTc = startTc;
 
         if (this.framerate != 0) {
-            this.start_tc.setFramerate(this.framerate);
+            this.startTc.setFramerate(this.framerate);
         } // Sinon, on affecte le framerate du timecode (s'il en a un) à média.
         else {
-            this.framerate = (int) this.start_tc.getFramerate();
+            this.framerate = (int) this.startTc.getFramerate();
         }
     }
 
@@ -1580,29 +1583,29 @@ public final class Timeline {
      * Verrouille toutes les pistes Audio.
      */
     public void verrouillerPisteAudio() {
-        this.verrouiller_piste_audio = true;
+        this.verrouillerPisteAudio = true;
     }
 
     /**
      * Verrouille (ou déverrouille) une piste audio.
      *
-     * @param numero_piste Numéro de piste audio.
+     * @param numeroPiste Numéro de piste audio.
      */
-    public void verrouillerPisteAudio(int numero_piste) {
-        this.verrouillerPisteAudio(numero_piste, true);
+    public void verrouillerPisteAudio(int numeroPiste) {
+        this.verrouillerPisteAudio(numeroPiste, true);
     }
 
     /**
      * Verrouille (ou déverrouille) une piste audio.
      *
-     * @param numero_piste Numéro de piste audio.
+     * @param numeroPiste Numéro de piste audio.
      * @param verrouiller Verrouille la piste audio si {@code true}.
      */
-    public void verrouillerPisteAudio(int numero_piste, boolean verrouiller) {
+    public void verrouillerPisteAudio(int numeroPiste, boolean verrouiller) {
         if (verrouiller) {
-            this.liste_piste_audio_verrouiller.add(numero_piste);
+            this.listePisteAudioVerrouiller.add(numeroPiste);
         } else {
-            this.liste_piste_audio_verrouiller.remove(numero_piste);
+            this.listePisteAudioVerrouiller.remove(numeroPiste);
         }
     }
 
@@ -1610,30 +1613,30 @@ public final class Timeline {
      * Verrouille toutes les pistes vidéos.
      */
     public void verrouillerPisteVideo() {
-        this.verrouiller_piste_video = true;
+        this.verrouillerPisteVideo = true;
     }
 
     /**
      * Indique un numéro de piste vidéo qu'on veut verrouiller dans le projet du
      * NLE.
      *
-     * @param numero_piste Numéro de piste vidéo.
+     * @param numeroPiste Numéro de piste vidéo.
      */
-    public void verrouillerPisteVideo(int numero_piste) {
-        this.verrouillerPisteVideo(numero_piste, true);
+    public void verrouillerPisteVideo(int numeroPiste) {
+        this.verrouillerPisteVideo(numeroPiste, true);
     }
 
     /**
      * Verrouille (ou déverrouille) une piste vidéo.
      *
-     * @param numero_piste Numéro de piste vidéo.
+     * @param numeroPiste Numéro de piste vidéo.
      * @param verrouiller Verrouille la piste vidéo si {@code true}.
      */
-    public void verrouillerPisteVideo(int numero_piste, boolean verrouiller) {
+    public void verrouillerPisteVideo(int numeroPiste, boolean verrouiller) {
         if (verrouiller) {
-            this.liste_piste_video_verrouiller.add(numero_piste);
+            this.listePisteVideoVerrouiller.add(numeroPiste);
         } else {
-            this.liste_piste_video_verrouiller.remove(numero_piste);
+            this.listePisteVideoVerrouiller.remove(numeroPiste);
         }
     }
 }

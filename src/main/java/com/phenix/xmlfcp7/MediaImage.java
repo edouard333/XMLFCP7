@@ -10,10 +10,10 @@ public final class MediaImage extends Media {
     /**
      * Construit un média image.
      *
-     * @param nom_fichier Nom du fichier.
+     * @param nomFichier Nom du fichier.
      */
-    public MediaImage(String nom_fichier) {
-        super(nom_fichier);
-        this.type_media = "image";
+    public MediaImage(String nomFichier) {
+        super(nomFichier);
+        this.typeMedia = "image";
     }
 }

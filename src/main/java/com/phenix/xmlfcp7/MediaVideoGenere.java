@@ -20,18 +20,18 @@ public final class MediaVideoGenere extends MediaVideo {
     /**
      * Qu'est-ce qui est généré.
      */
-    private final int element_genere;
+    private final int elementGenere;
 
     /**
      * Définit un élément généré via son ID et un framerate.<br>
      * Pour l'instant, ne gère que les "Vidéo noire".
      *
-     * @param element_genere ID de l'élément généré.
+     * @param elementGenere ID de l'élément généré.
      * @param framerate Framerate.
      */
-    public MediaVideoGenere(int element_genere, int framerate) {
+    public MediaVideoGenere(int elementGenere, int framerate) {
         super("Vidéo noire", framerate);
-        this.type_media = "genere";
-        this.element_genere = element_genere;
+        this.typeMedia = "genere";
+        this.elementGenere = elementGenere;
     }
 }

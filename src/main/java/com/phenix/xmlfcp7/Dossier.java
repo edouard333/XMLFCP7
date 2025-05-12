@@ -1,5 +1,6 @@
 package com.phenix.xmlfcp7;
 
+import com.phenix.xmlfcp7.internal.FCP7XMLConvertible;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -10,25 +11,25 @@ import java.util.List;
  *
  * @author <a href="mailto:edouard128@hotmail.com">Edouard Jeanjean</a>
  */
-public final class Dossier {
+public final class Dossier implements FCP7XMLConvertible {
 
     /**
      * Liste des médias dans le dossier.
      */
     @NotNull
-    private final List<Media> liste_media;
+    private final List<Media> listeMedia;
 
     /**
      * Liste des timelines dans le dossier.
      */
     @NotNull
-    private final List<Timeline> liste_timeline;
+    private final List<Timeline> listeTimeline;
 
     /**
      * Liste des dossiers dans le dossier.
      */
     @NotNull
-    private final List<Dossier> liste_dossier;
+    private final List<Dossier> listeDossier;
 
     /**
      * Nom du dossier.
@@ -45,7 +46,7 @@ public final class Dossier {
     /**
      * Couleurs d'Adobe.
      */
-    public enum CouleurAdobe {
+    public enum CouleurAdobe implements FCP7XMLConvertible {
         /**
          * Couleur orange pour Adobe.
          */
@@ -84,7 +85,7 @@ public final class Dossier {
          */
         @NotNull
         @NotBlank
-        private final String valeur;
+        public final String valeur;
 
         /**
          *
@@ -94,14 +95,10 @@ public final class Dossier {
             this.valeur = valeur;
         }
 
-        /**
-         *
-         * @return
-         */
         @NotNull
         @NotBlank
         @Override
-        public String toString() {
+        public String toFCP7XML() {
             return this.valeur;
         }
     }
@@ -125,9 +122,9 @@ public final class Dossier {
         this.nom = nom;
         this.couleur = couleur;
 
-        this.liste_media = new ArrayList<Media>();
-        this.liste_timeline = new ArrayList<Timeline>();
-        this.liste_dossier = new ArrayList<Dossier>();
+        this.listeMedia = new ArrayList<Media>();
+        this.listeTimeline = new ArrayList<Timeline>();
+        this.listeDossier = new ArrayList<Dossier>();
     }
 
     /**
@@ -136,7 +133,7 @@ public final class Dossier {
      * @param dossier Dossier à ajouter.
      */
     public void addDossier(@NotNull Dossier dossier) {
-        this.liste_dossier.add(dossier);
+        this.listeDossier.add(dossier);
     }
 
     /**
@@ -145,7 +142,7 @@ public final class Dossier {
      * @param media Média à ajouter.
      */
     public void addMedia(@NotNull Media media) {
-        this.liste_media.add(media);
+        this.listeMedia.add(media);
     }
 
     /**
@@ -154,7 +151,7 @@ public final class Dossier {
      * @param timeline La timeline.
      */
     public void addTimeline(@NotNull Timeline timeline) {
-        this.liste_timeline.add(timeline);
+        this.listeTimeline.add(timeline);
     }
 
     /**
@@ -193,28 +190,28 @@ public final class Dossier {
     @NotNull
     @NotBlank
     @Override
-    public String toString() {
+    public String toFCP7XML() {
         String xml = "<bin>\n"
                 + "<name>" + this.nom + "</name>\n"
                 + "<labels>\n"
-                + "<label2>" + this.couleur + "</label2>\n"
+                + "<label2>" + this.couleur.toFCP7XML() + "</label2>\n"
                 + "</labels>\n";
 
         xml += "<children>\n";
 
         // Ajout des sous-dossiers :
-        for (Dossier dossier : this.liste_dossier) {
-            xml += dossier.toString();
+        for (Dossier dossier : this.listeDossier) {
+            xml += dossier.toFCP7XML();
         }
 
         // Ajout des médias :
-        for (Media media : this.liste_media) {
-            xml += ((Media) media).toString();
+        for (Media media : this.listeMedia) {
+            xml += ((Media) media).toFCP7XML();
         }
 
         // Ajout des séquences :
-        for (Timeline timeline : this.liste_timeline) {
-            xml += timeline.toString();
+        for (Timeline timeline : this.listeTimeline) {
+            xml += timeline.toFCP7XML();
         }
 
         xml += "</children>\n"

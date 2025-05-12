@@ -53,13 +53,13 @@ public class MediaVideo extends Media {
     /**
      * Information si la vidéo est freeze ou non.
      */
-    private boolean est_freeze = false;
+    private boolean estFreeze = false;
 
     /**
      * À quel logiciel est destiné ce média vidéo.<br>
      * Par défaut c'est Adobe Premiere.
      */
-    private Logiciel logiciel_destination = Logiciel.PREMIERE;
+    private Logiciel logicielDestination = Logiciel.PREMIERE;
 
     /**
      * Information pour le média vidéo, mais qu'on ne peut renseigner
@@ -80,12 +80,12 @@ public class MediaVideo extends Media {
     /**
      * Construit un MediaVideo à partir d'un nom de fichier.
      *
-     * @param nom_fichier Nom du fichier.
+     * @param nomFichier Nom du fichier.
      */
-    public MediaVideo(String nom_fichier) {
-        super(nom_fichier);
+    public MediaVideo(String nomFichier) {
+        super(nomFichier);
         this.canaux = 0;
-        this.type_media = "video";
+        this.typeMedia = "video";
         this.par = 1;
         this.alpha = Alpha.NONE;
     }
@@ -93,13 +93,13 @@ public class MediaVideo extends Media {
     /**
      * Construit un MediaVideo à partir d'un nom de fichier et de son framerate.
      *
-     * @param nom_fichier Nom du fichier.
+     * @param nomFichier Nom du fichier.
      * @param framerate Framerate.
      */
-    public MediaVideo(String nom_fichier, int framerate) {
-        super(nom_fichier, framerate);
+    public MediaVideo(String nomFichier, int framerate) {
+        super(nomFichier, framerate);
         this.canaux = 0;
-        this.type_media = "video";
+        this.typeMedia = "video";
         this.par = 1;
         this.alpha = Alpha.NONE;
     }
@@ -168,27 +168,27 @@ public class MediaVideo extends Media {
      * Pour Resolve : UHD :<br>
      * Il y a un calcul.
      *
-     * @param largeur_timeline Largeur de la timeline.
-     * @param hauteur_timeline Hauteur de la timeline.
-     * @param par_timeline PAR de la timeline.
+     * @param largeurTimeline Largeur de la timeline.
+     * @param hauteurTimeline Hauteur de la timeline.
+     * @param parTimeline PAR de la timeline.
      *
      * @return Position X pour Premiere ou Resolve.
      */
-    public double getPositionHorizontale(double largeur_timeline, double hauteur_timeline, double par_timeline) {
+    public double getPositionHorizontale(double largeurTimeline, double hauteurTimeline, double parTimeline) {
         // On divise la largeur en 2 pour avoir la partie positive ou négative.
-        if (this.logiciel_destination == Logiciel.PREMIERE) {
-            return ((this.x - (largeur_timeline / 2F)) / this.largeur) * (par_timeline / this.par);
-            // return (this.x / largeur_timeline) - 0.5D;
+        if (this.logicielDestination == Logiciel.PREMIERE) {
+            return ((this.x - (largeurTimeline / 2F)) / this.largeur) * (parTimeline / this.par);
+            // return (this.x / largeurTimeline) - 0.5D;
         } // Pour Resolve :
         else {
-            double calcule_x = (this.x / largeur_timeline) - 0.5D;
+            double calculeX = (this.x / largeurTimeline) - 0.5D;
 
-            // OLD = largeur_timeline / (1.193D / par_timeline) > hauteur_timeline
-            if ((largeur_timeline * par_timeline) / hauteur_timeline >= (this.largeur * this.par) / this.hauteur) {
-                double calcule_1 = (largeur_timeline / hauteur_timeline) / ((double) this.largeur / (double) this.hauteur) / this.par;
-                return calcule_x * calcule_1 * par_timeline;
+            // OLD = largeurTimeline / (1.193D / parTimeline) > hauteurTimeline
+            if ((largeurTimeline * parTimeline) / hauteurTimeline >= (this.largeur * this.par) / this.hauteur) {
+                double calcule1 = (largeurTimeline / hauteurTimeline) / ((double) this.largeur / (double) this.hauteur) / this.par;
+                return calculeX * calcule1 * parTimeline;
             } else {
-                return calcule_x;
+                return calculeX;
             }
         }
     }
@@ -203,27 +203,27 @@ public class MediaVideo extends Media {
      * Pour Resolve :<br>
      * Il y a un calcul.
      *
-     * @param largeur_timeline Largeur de la timeline.
-     * @param hauteur_timeline Hauteur de la timeline.
-     * @param par_timeline PAR de la timeline.
+     * @param largeurTimeline Largeur de la timeline.
+     * @param hauteurTimeline Hauteur de la timeline.
+     * @param parTimeline PAR de la timeline.
      *
      * @return Position Y pour Premiere ou Resolve.
      */
-    public double getPositionVerticale(double largeur_timeline, double hauteur_timeline, double par_timeline) {
+    public double getPositionVerticale(double largeurTimeline, double hauteurTimeline, double parTimeline) {
         // On divise la hauteur en 2 pour avoir la partie positive ou négative.
-        if (logiciel_destination == Logiciel.PREMIERE) {
-            return (this.y - (hauteur_timeline / 2F)) / this.hauteur;
-            //return ((this.y / hauteur_timeline) - (0.5D)) * (((double) this.largeur / (double) this.hauteur) / (largeur_timeline / hauteur_timeline));
+        if (logicielDestination == Logiciel.PREMIERE) {
+            return (this.y - (hauteurTimeline / 2F)) / this.hauteur;
+            //return ((this.y / hauteurTimeline) - (0.5D)) * (((double) this.largeur / (double) this.hauteur) / (largeurTimeline / hauteurTimeline));
         } // Pour Resolve:
         else {
-            double calcule_y = (this.y / hauteur_timeline) - 0.5D;
+            double calculeY = (this.y / hauteurTimeline) - 0.5D;
 
-            // OLD = largeur_timeline / (1.193D / par_timeline) > hauteur_timeline
-            if ((largeur_timeline * par_timeline) / hauteur_timeline >= (this.largeur * this.par) / this.hauteur) {
-                return calcule_y;
+            // OLD = largeurTimeline / (1.193D / parTimeline) > hauteurTimeline
+            if ((largeurTimeline * parTimeline) / hauteurTimeline >= (this.largeur * this.par) / this.hauteur) {
+                return calculeY;
             } else {
-                double calcule_3 = ((double) this.largeur / (double) this.hauteur) / (largeur_timeline / hauteur_timeline);
-                return calcule_y * calcule_3;
+                double calcule3 = ((double) this.largeur / (double) this.hauteur) / (largeurTimeline / hauteurTimeline);
+                return calculeY * calcule3;
             }
         }
     }
@@ -252,7 +252,7 @@ public class MediaVideo extends Media {
      * @return {@code true} si l'image est freezé sinon {@code false}.
      */
     public boolean isFreeze() {
-        return this.est_freeze;
+        return this.estFreeze;
     }
 
     /**
@@ -298,10 +298,10 @@ public class MediaVideo extends Media {
     /**
      * Définit si l'image est freezé.
      *
-     * @param est_freeze {@code true} si l'image est freezé.
+     * @param estFreeze {@code true} si l'image est freezé.
      */
-    public void setFreeze(boolean est_freeze) {
-        this.est_freeze = est_freeze;
+    public void setFreeze(boolean estFreeze) {
+        this.estFreeze = estFreeze;
     }
 
     /**
@@ -316,10 +316,10 @@ public class MediaVideo extends Media {
     /**
      * Modifie à quel logiciel est destiné cette vidéo.
      *
-     * @param logiciel_destination Logiciel auquel est destiné la timeline.
+     * @param logicielDestination Logiciel auquel est destiné la timeline.
      */
-    public void setLogicielDestination(Logiciel logiciel_destination) {
-        this.logiciel_destination = logiciel_destination;
+    public void setLogicielDestination(Logiciel logicielDestination) {
+        this.logicielDestination = logicielDestination;
     }
 
     /**

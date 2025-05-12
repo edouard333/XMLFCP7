@@ -1,5 +1,7 @@
 package com.phenix.xmlfcp7.enums;
 
+import com.phenix.xmlfcp7.internal.FCP7XMLConvertible;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Null;
 
 /**
@@ -7,7 +9,7 @@ import jakarta.validation.constraints.Null;
  *
  * @author <a href="mailto:edouard128@hotmail.com">Edouard Jeanjean</a>
  */
-public enum CouleurMarqueur {
+public enum CouleurMarqueur implements FCP7XMLConvertible {
     /**
      * Couleur rouge.
      */
@@ -37,104 +39,60 @@ public enum CouleurMarqueur {
      * ID de couleur pour Adobe Premiere.
      */
     @Null
-    private final String id_couleur_premiere;
+    @NotBlank
+    public final String couleurPremiere;
 
     /**
      * Valeur du canal alpha.
      */
-    private final int canal_alpha;
+    public final int canalAlpha;
 
     /**
      * Valeur du canal rouge.
      */
-    private final int canal_rouge;
+    public final int canalRouge;
 
     /**
      * Valeur du canal vert.
      */
-    private final int canal_vert;
+    public final int canalVert;
 
     /**
      * Valeur du canal bleu.
      */
-    private final int canal_bleu;
+    public final int canalBleu;
 
     /**
      * Définit une valeur de couleur.
      *
-     * @param id_couleur_premiere
-     * @param canal_alpha
-     * @param canal_rouge
-     * @param canal_vert
-     * @param canal_bleu
+     * @param couleurpremiere
+     * @param canalalpha
+     * @param canalrouge
+     * @param canalvert
+     * @param canalbleu
      */
-    private CouleurMarqueur(@Null String id_couleur_premiere, int canal_alpha, int canal_rouge, int canal_vert, int canal_bleu) {
-        this.id_couleur_premiere = id_couleur_premiere;
-        this.canal_alpha = canal_alpha;
-        this.canal_rouge = canal_rouge;
-        this.canal_vert = canal_vert;
-        this.canal_bleu = canal_bleu;
-    }
-
-    /**
-     * Retourne le canal alpha.
-     *
-     * @return Valeur du canal alpha;
-     */
-    public int getCanalAlpha() {
-        return this.canal_alpha;
-    }
-
-    /**
-     * Retourne le canal bleu.
-     *
-     * @return Valeur du canal bleu.
-     */
-    public int getCanalBleu() {
-        return this.canal_bleu;
-    }
-
-    /**
-     * Retourne le canal rouge.
-     *
-     * @return Valeur du canal rouge.
-     */
-    public int getCanalRouge() {
-        return this.canal_rouge;
-    }
-
-    /**
-     * Retourne le canal vert.
-     *
-     * @return Valeur du canal vert.
-     */
-    public int getCanalVert() {
-        return this.canal_vert;
-    }
-
-    /**
-     * Retourne couleur pour Adobe Premiere.
-     *
-     * @return Valeur pour Adobe Premiere.
-     */
-    public String getCouleurPremiere() {
-        return this.id_couleur_premiere;
+    private CouleurMarqueur(@Null String couleurPremiere, int canalAlpha, int canalRouge, int canalVert, int canalBleu) {
+        this.couleurPremiere = couleurPremiere;
+        this.canalAlpha = canalAlpha;
+        this.canalRouge = canalRouge;
+        this.canalVert = canalVert;
+        this.canalBleu = canalBleu;
     }
 
     /**
      * Retourne une couleur de marqueur selon la couleur d'Adobe Premiere.
      *
-     * @param couleur_premiere Couleur Adobe Premiere.
+     * @param couleurPremiere Couleur Adobe Premiere.
      * @return La couleur.
      */
     @Null
-    public static CouleurMarqueur fromCouleurPremiere(String couleur_premiere) {
+    public static CouleurMarqueur fromCouleurPremiere(String couleurPremiere) {
         for (CouleurMarqueur couleur : values()) {
-            if (couleur.id_couleur_premiere == null) {
-                if (couleur.id_couleur_premiere == couleur_premiere) {
+            if (couleur.couleurPremiere == null) {
+                if (couleur.couleurPremiere == couleurPremiere) {
                     return couleur;
                 }
-            } else if (couleur.id_couleur_premiere.equals(couleur_premiere)) {
+            } else if (couleur.couleurPremiere.equals(couleurPremiere)) {
                 return couleur;
             }
         }
@@ -142,14 +100,10 @@ public enum CouleurMarqueur {
         return null;
     }
 
-    /**
-     * Afficher la couleur c'est afficher la valeur d'Adobe Premiere.
-     *
-     * @return Valeur de la couleur selon Adobe Premiere.
-     */
     @Null
+    @NotBlank
     @Override
-    public String toString() {
-        return this.id_couleur_premiere;
+    public String toFCP7XML() {
+        return this.couleurPremiere;
     }
 }

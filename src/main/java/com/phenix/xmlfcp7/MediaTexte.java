@@ -17,7 +17,7 @@ public final class MediaTexte extends MediaVideo {
      */
     @NotNull
     @NotBlank
-    private final String media_source;
+    private final String mediaSource;
 
     /**
      * Texte qui sera affiché.
@@ -31,11 +31,11 @@ public final class MediaTexte extends MediaVideo {
      */
     public MediaTexte(int framerate) {
         super("Image", framerate);
-        this.type_media = "genere";
+        this.typeMedia = "genere";
         this.setDureeFichier(new Timecode("99:00:00:00", framerate));
         this.setStart(new Timecode("00:00:00:00", framerate));
         this.setIn(new Timecode("00:00:00:00", framerate));
-        this.media_source = "GraphicAndType";
+        this.mediaSource = "GraphicAndType";
         this.setAlpha(Alpha.STRAIGHT);
     }
 
@@ -47,7 +47,7 @@ public final class MediaTexte extends MediaVideo {
     @NotNull
     @NotBlank
     public String getMediaSource() {
-        return this.media_source;
+        return this.mediaSource;
     }
 
     /**

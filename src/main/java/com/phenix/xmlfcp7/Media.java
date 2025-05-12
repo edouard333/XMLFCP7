@@ -5,6 +5,7 @@ import com.phenix.xmlfcp7.effect.Effect;
 import com.phenix.xmlfcp7.enums.Balayage;
 import com.phenix.xmlfcp7.enums.CouleurMedia;
 import com.phenix.xmlfcp7.enums.Trame;
+import com.phenix.xmlfcp7.internal.FCP7XMLConvertible;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -15,12 +16,12 @@ import java.util.List;
  *
  * @author <a href="mailto:edouard128@hotmail.com">Edouard Jeanjean</a>
  */
-public class Media {
+public class Media implements FCP7XMLConvertible {
 
     /**
      * Durée du fichier qui peut être différent du média dans la timeline.
      */
-    private Timecode duree_fichier;
+    private Timecode dureeFichier;
 
     /**
      * Framerate du média.
@@ -45,12 +46,12 @@ public class Media {
     /**
      * Nom de la bobine (<em>reel name</em>).
      */
-    private String nom_bobine;
+    private String nomBobine;
 
     /**
      * Nom du fichier.
      */
-    private String nom_fichier;
+    private String nomFichier;
 
     /**
      * Timecode out.
@@ -75,7 +76,7 @@ public class Media {
     /**
      * Id du média. (?)
      */
-    private static int id_actuelle = 1;
+    private static int idActuelle = 1;
 
     /**
      * Masterclip id.
@@ -92,7 +93,7 @@ public class Media {
      * qui existe (png, mov, wav, etc) ou un élément généré (mire, décompte,
      * etc).
      */
-    protected String type_media = "media";
+    protected String typeMedia = "media";
 
     /**
      * La couleur du média : bleu par défaut.
@@ -103,33 +104,33 @@ public class Media {
      *
      */
     @NotNull
-    private final List<Effect> liste_effet;
+    private final List<Effect> listeEffet;
 
     /**
      * Définit un média sur base de son nom de fichier.
      *
-     * @param nom_fichier Nom du fichier.
+     * @param nomFichier Nom du fichier.
      */
-    public Media(String nom_fichier) {
-        this.nom_fichier = nom_fichier;
+    public Media(String nomFichier) {
+        this.nomFichier = nomFichier;
 
         // Par défaut, balayage progressig (donc aucune trame).
         this.balayage = Balayage.PROGRESSIF;
         this.trame = Trame.AUCUNE;
-        this.liste_effet = new ArrayList<Effect>();
+        this.listeEffet = new ArrayList<Effect>();
 
-        id = id_actuelle;
-        id_actuelle++;
+        id = idActuelle;
+        idActuelle++;
     }
 
     /**
      * Définit un média sur base de son nom de fichier et du framerate.
      *
-     * @param nom_fichier Nom du fichier.
+     * @param nomFichier Nom du fichier.
      * @param framerate Framerate.
      */
-    public Media(String nom_fichier, int framerate) {
-        this(nom_fichier);
+    public Media(String nomFichier, int framerate) {
+        this(nomFichier);
         this.framerate = framerate;
     }
 
@@ -139,7 +140,7 @@ public class Media {
      * @param effect L'effet.
      */
     public void addEffect(Effect effect) {
-        this.liste_effet.add(effect);
+        this.listeEffet.add(effect);
     }
 
     /**
@@ -177,8 +178,8 @@ public class Media {
      * @return Durée du fichier.
      */
     public Timecode getDureeFichier() {
-        if (this.duree_fichier != null) {
-            return this.duree_fichier;
+        if (this.dureeFichier != null) {
+            return this.dureeFichier;
         } else {
             return this.getDuree();
         }
@@ -235,7 +236,7 @@ public class Media {
      * @return Nom de la bobine.
      */
     public String getNomBobine() {
-        return this.nom_bobine;
+        return this.nomBobine;
     }
 
     /**
@@ -244,7 +245,7 @@ public class Media {
      * @return Nom du fichier.
      */
     public String getNomFichier() {
-        return this.nom_fichier;
+        return this.nomFichier;
     }
 
     /**
@@ -280,7 +281,7 @@ public class Media {
      * @return Le type.
      */
     public String getTypeMedia() {
-        return this.type_media;
+        return this.typeMedia;
     }
 
     /**
@@ -307,10 +308,10 @@ public class Media {
     /**
      * Définit la durée du fichier.
      *
-     * @param duree_fichier Durée du fichier.
+     * @param dureeFichier Durée du fichier.
      */
-    public void setDureeFichier(Timecode duree_fichier) {
-        this.duree_fichier = duree_fichier;
+    public void setDureeFichier(Timecode dureeFichier) {
+        this.dureeFichier = dureeFichier;
     }
 
     /**
@@ -346,7 +347,7 @@ public class Media {
      */
     @NotNull
     public List<Effect> getListeEffect() {
-        return this.liste_effet;
+        return this.listeEffet;
     }
 
     /**
@@ -371,19 +372,19 @@ public class Media {
      * Définit le nom de la bobine fichier.<br>
      * C'est le "<em>reel name</em>".
      *
-     * @param nom_bobine Nom de la bobine.
+     * @param nomBobine Nom de la bobine.
      */
-    public void setNomBobine(String nom_bobine) {
-        this.nom_bobine = nom_bobine;
+    public void setNomBobine(String nomBobine) {
+        this.nomBobine = nomBobine;
     }
 
     /**
      * Définit le nom du média fichier.
      *
-     * @param nom_fichier Nom du média fichier.
+     * @param nomFichier Nom du média fichier.
      */
-    public void setNomFichier(String nom_fichier) {
-        this.nom_fichier = nom_fichier;
+    public void setNomFichier(String nomFichier) {
+        this.nomFichier = nomFichier;
     }
 
     /**
@@ -426,7 +427,7 @@ public class Media {
     @NotNull
     @NotBlank
     @Override
-    public String toString() {
+    public String toFCP7XML() {
         String xml = "<clip id=\"masterclip-5\" explodedTracks=\"true\">\n"
                 + "\t\t\t\t\t\t\t\t\t\t<uuid>8712fc3e-6ee7-459f-87d3-1866ff0a68fe</uuid>\n"
                 + "\t\t\t\t\t\t\t\t\t\t<masterclipid>masterclip-5</masterclipid>\n"
