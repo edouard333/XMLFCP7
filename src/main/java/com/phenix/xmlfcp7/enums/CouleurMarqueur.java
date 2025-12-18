@@ -15,25 +15,29 @@ public enum CouleurMarqueur implements FCP7XMLConvertible {
      */
     ROUGE("4281740498", 0, 255, 0, 0),
     /**
-     * Couleur vert, on ne connait pas la valeur de la couleur Adobe Premiere.
+     * Couleur verte, on ne connait pas la valeur de la couleur Adobe Premiere.
      */
     VERT(null, 0, 48, 191, 72),
     /**
-     * Couleur bleu, on ne connait pas la valeur de la couleur Adobe Premiere.
+     * Couleur bleu.
      */
     BLEU("4294741314", 0, 0, 0, 255),
     /**
-     * Couleur orange, on ne connait pas la valeur de la couleur Adobe Premiere.
+     * Couleur orange.
      */
     ORANGE("4280578025", 0, 255, 127, 0),
     /**
-     * Couleur jaune, on ne connait pas la valeur de la couleur Adobe Premiere.
+     * Couleur jaune.
      */
     JAUNE("4281049552", 0, 0, 0, 0),
     /**
-     * Couleur blanc, on ne connait pas la valeur de la couleur Adobe Premiere.
+     * Couleur blanc.
      */
-    BLANC("4294967295", 0, 0, 0, 0);
+    BLANC("4294967295", 0, 0, 0, 0),
+    /**
+     * Couleur mauve.
+     */
+    MAUVE("4281740498", 0, 0, 0, 0);
 
     /**
      * ID de couleur pour Adobe Premiere.
@@ -65,11 +69,11 @@ public enum CouleurMarqueur implements FCP7XMLConvertible {
     /**
      * Définit une valeur de couleur.
      *
-     * @param couleurpremiere
-     * @param canalalpha
-     * @param canalrouge
-     * @param canalvert
-     * @param canalbleu
+     * @param couleurPremiere La couleur selon Adobe Premiere.
+     * @param canalAlpha Le canal alpha.
+     * @param canalRouge Le canal rouge.
+     * @param canalVert Le canal vert.
+     * @param canalBleu Le canal bleu.
      */
     private CouleurMarqueur(@Null String couleurPremiere, int canalAlpha, int canalRouge, int canalVert, int canalBleu) {
         this.couleurPremiere = couleurPremiere;

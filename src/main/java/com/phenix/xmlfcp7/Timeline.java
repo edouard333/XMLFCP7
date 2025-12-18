@@ -237,7 +237,7 @@ public final class Timeline implements FCP7XMLConvertible {
         this.verrouillerPisteVideo = false;
         this.verrouillerPisteAudio = false;
 
-        // Par défaut c'est pour Adobe Premiere.
+        // Par défaut, c'est pour Adobe Premiere.
         this.logicielDestination = XMLFCP7.Logiciel.PREMIERE;
 
         // Initialise les valeurs dans le constructeur et non dans la classe.
@@ -335,7 +335,7 @@ public final class Timeline implements FCP7XMLConvertible {
      * @param out Point out du média.
      */
     public void addMedia(int piste, Media media, Timecode in, Timecode out) {
-        // Média activé pardéfaut.
+        // Média activé par défaut.
         this.addMedia(piste, media, in, out, true);
     }
 
@@ -1151,9 +1151,10 @@ public final class Timeline implements FCP7XMLConvertible {
     }
 
     /**
+     * Retourne le code XML.
      *
      * @param nb
-     * @return
+     * @return Le code XML.
      */
     private String canauxClip2(int nb) {
         String xml = "";

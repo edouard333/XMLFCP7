@@ -56,7 +56,7 @@ public final class Dossier implements FCP7XMLConvertible {
          */
         ROSE("Rose"),
         /**
-         * Couleur vert pour Adobe.
+         * Couleur verte pour Adobe.
          */
         FORET("Forest"),
         /**
@@ -76,7 +76,7 @@ public final class Dossier implements FCP7XMLConvertible {
          */
         IRIS("Iris"),
         /**
-         * Couleur violet pour Adobe.
+         * Couleur violette pour Adobe.
          */
         VIOLET("Violet");
 
@@ -88,8 +88,9 @@ public final class Dossier implements FCP7XMLConvertible {
         public final String valeur;
 
         /**
+         * Une couleur Adobe.
          *
-         * @param valeur
+         * @param valeur La valeur.
          */
         private CouleurAdobe(@NotNull @NotBlank String valeur) {
             this.valeur = valeur;
@@ -206,7 +207,7 @@ public final class Dossier implements FCP7XMLConvertible {
 
         // Ajout des médias :
         for (Media media : this.listeMedia) {
-            xml += ((Media) media).toFCP7XML();
+            xml += media.toFCP7XML();
         }
 
         // Ajout des séquences :

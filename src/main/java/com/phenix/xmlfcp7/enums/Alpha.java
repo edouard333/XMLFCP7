@@ -28,7 +28,7 @@ public enum Alpha implements FCP7XMLConvertible {
     private final String methode;
 
     /**
-     * Définit la méthode de couche alpha?
+     * Définit la méthode de couche alpha.
      *
      * @param methode La méthode.
      */

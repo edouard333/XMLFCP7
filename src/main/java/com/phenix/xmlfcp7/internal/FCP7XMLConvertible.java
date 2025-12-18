@@ -13,7 +13,7 @@ public interface FCP7XMLConvertible {
 
     /**
      * Retourne une représentation XML.<br>
-     * Pour l'instant, ne peut pas être vide car si l'objet existe c'est qu'il y
+     * Pour l'instant, ne peut pas être vide, car si l'objet existe, c'est qu'il y
      * a des valeurs à convertir en FCP7 XML.
      *
      * @return Représentation XML.
