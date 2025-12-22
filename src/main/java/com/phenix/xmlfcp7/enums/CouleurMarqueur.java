@@ -37,7 +37,7 @@ public enum CouleurMarqueur implements FCP7XMLConvertible {
     /**
      * Couleur mauve.
      */
-    MAUVE("4281740498", 0, 0, 0, 0);
+    MAUVE("4289825711", 0, 0, 0, 0);
 
     /**
      * ID de couleur pour Adobe Premiere.
