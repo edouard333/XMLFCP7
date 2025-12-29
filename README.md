@@ -1,4 +1,4 @@
-# XMLFCP7
+# XML FCP7
 Librairie qui gère l'écriture d'XML Final Cut Pro 7.
 
 # Comment l'utiliser ?
