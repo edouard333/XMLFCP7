@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.phenix</groupId>
     <artifactId>xmlfcp7</artifactId>
-    <version>0.8.13</version>
+    <version>0.8.14</version>
     <packaging>jar</packaging>
     
     <name>XMLFCP7</name>
@@ -24,7 +24,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.6.2</version>
+                <version>3.6.3</version>
                 <executions>
                     <execution>
                         <id>enforce-files-exist</id>
@@ -56,6 +56,13 @@
                                     <message>"appType" doit être défini.</message>
                                     <regex>^(graphic|console|library)$</regex>
                                     <regexMessage>La valeur doit être soit "graphic" soit "console" soit "library".</regexMessage>
+                                </requireProperty>
+                                <!-- Vérifie que la propriété "skipTests" existe. -->
+                                <requireProperty>
+                                    <property>skipTests</property>
+                                    <message>"skipTests" doit être défini.</message>
+                                    <regex>^(false|true)$</regex>
+                                    <regexMessage>"skipTests" doit être soit "true" soit "false".</regexMessage>
                                 </requireProperty>
                             </rules>
                             <fail>true</fail>
@@ -99,6 +106,66 @@
                         <goals>
                             <goal>check</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <!-- Fait les tests. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.6</version>
+                <configuration>
+                    <skipTests>${skipTests}</skipTests>
+                </configuration>
+            </plugin>
+            
+            <!-- Fait les tests avec un coverage mode. -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.14</version>
+                <configuration>
+                    <skip>${skipTests}</skip>
+                    <excludes>
+                        <!-- On ne teste pas les exceptions. -->
+                        <exclude>**com/phenix/xmlfcp7/exception/*</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                    <!-- Vérification du seuil de couverture. -->
+                    <execution>
+                        <id>check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <rule>
+                                    <element>BUNDLE</element> <!-- Vérifie la couverture globale. -->
+                                    <limits>
+                                        <limit>
+                                            <counter>LINE</counter>  <!-- Vérifie le % de lignes couvertes. -->
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.67</minimum> <!-- Fixe le seuil à 67%. -->
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -175,13 +242,20 @@
         <dependency>
             <groupId>com.phenix</groupId>
             <artifactId>timecode</artifactId>
-            <version>0.8.5</version>
+            <version>0.9.0</version>
         </dependency>
         <!-- Ajout des annotations @NotNull, etc. -->
         <dependency>
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
             <version>3.1.1</version>
+        </dependency>
+        <!-- Avoir les options d'annotation JUnit. -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>6.1.0</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     
@@ -190,5 +264,7 @@
         <maven.compiler.release>25</maven.compiler.release>
         <!-- Type d'application : "graphic", "console" ou "library". -->
         <appType>library</appType>
+        <!-- Indique si on saute ou non les tests (et du coup le coverage mode). -->
+        <skipTests>false</skipTests>
     </properties>
 </project>

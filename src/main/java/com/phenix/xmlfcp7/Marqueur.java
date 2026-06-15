@@ -80,7 +80,7 @@ public final class Marqueur {
     }
 
     /**
-     * Construit un marqueur.
+     * Construit un marqueur à un TC.
      *
      * @param note Description.
      * @param in Timecode in.

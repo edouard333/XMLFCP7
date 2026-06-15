@@ -18,20 +18,6 @@ import java.util.List;
 public final class XMLFCP7 {
 
     /**
-     * Les différents modes.
-     */
-    public enum Mode {
-        /**
-         * Si on lit l'XML.
-         */
-        LECTURE,
-        /**
-         * Si on écrit l'XML.
-         */
-        ECRITURE;
-    }
-
-    /**
      * Logiciels utilisables pour l'export.
      */
     public enum Logiciel {
@@ -49,12 +35,8 @@ public final class XMLFCP7 {
     /**
      * Le fichier XML à créer ou lire.
      */
-    private File fichier;
-
-    /**
-     * Si écriture ou lecture.
-     */
-    private Mode mode;
+    @NotNull
+    private final File fichier;
 
     /**
      * Nom du projet.
@@ -82,36 +64,33 @@ public final class XMLFCP7 {
     /**
      * L'XML est destiné à quel logiciel.
      */
+    @NotNull
     private Logiciel logicielDestination;
 
     /**
-     * Construit un {@link XMLFCP7}.
+     * Construit un {@link XMLFCP7}.<br>
+     *
+     * Par défaut, spécifique pour Adobe Premiere Pro.
      *
      * @param fichier Le chemin et nom du fichier.
-     * @param mode Si on lit ou écrit l'XML.
      */
-    public XMLFCP7(File fichier, Mode mode) {
-        this(fichier, mode, Logiciel.PREMIERE);
+    public XMLFCP7(@NotNull File fichier) {
+        this(fichier, Logiciel.PREMIERE);
     }
 
     /**
      * Construit un {@link XMLFCP7}.
      *
      * @param fichier Le chemin et nom du fichier.
-     * @param mode Si on lit ou écrit l'XML.
      * @param logicielDestination Le XML est destiné à quel logiciel.
      */
-    public XMLFCP7(File fichier, Mode mode, Logiciel logicielDestination) {
+    public XMLFCP7(@NotNull File fichier, @NotNull Logiciel logicielDestination) {
         this.fichier = fichier;
-        this.mode = mode;
         this.logicielDestination = logicielDestination;
 
         this.listeMedia = new ArrayList<Media>();
         this.listeTimeline = new ArrayList<Timeline>();
         this.listeDossier = new ArrayList<Dossier>();
-
-        // Si on crée un nouvel XML FCP7, alors le nombre de timeline est de 0.
-        Timeline.nombreTimeline = 0;
     }
 
     /**
@@ -119,35 +98,17 @@ public final class XMLFCP7 {
      *
      * @param dossier Le dossier.
      */
-    public void addDossier(Dossier dossier) {
+    public void addDossier(@NotNull Dossier dossier) {
         this.listeDossier.add(dossier);
     }
 
     /**
-     * Ajoute un média audio au projet. Si mode écriture (add).
+     * Ajoute un média (image, audio, etc) au projet.
      *
-     * @param audio Média audio.
+     * @param media Média.
      */
-    public void addMediaAudio(MediaAudio audio) {
-        this.listeMedia.add(audio);
-    }
-
-    /**
-     * Ajoute une image au projet.
-     *
-     * @param image L'image a ajouter.
-     */
-    public void addMediaImage(MediaImage image) {
-        this.listeMedia.add(image);
-    }
-
-    /**
-     * Ajoute une vidéo au projet.
-     *
-     * @param video La vidéo à ajouter.
-     */
-    public void addMediaVideo(MediaVideo video) {
-        this.listeMedia.add(video);
+    public void addMedia(@NotNull Media media) {
+        this.listeMedia.add(media);
     }
 
     /**
@@ -155,7 +116,7 @@ public final class XMLFCP7 {
      *
      * @param timeline La timeline à ajouter.
      */
-    public void addTimeline(Timeline timeline) {
+    public void addTimeline(@NotNull Timeline timeline) {
         timeline.setLogicielDestination(this.logicielDestination);
         this.listeTimeline.add(timeline);
     }
@@ -198,15 +159,6 @@ public final class XMLFCP7 {
         } catch (IOException exception) {
             throw new XMLFCP7Exception(exception.getMessage(), exception);
         }
-    }
-
-    /**
-     * TODO : Retourne le média audio.
-     *
-     * @return L'audio.
-     */
-    public MediaAudio getMediaAudio() {
-        return new MediaAudio("XXX.wav");
     }
 
     /**

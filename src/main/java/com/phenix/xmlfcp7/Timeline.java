@@ -65,34 +65,6 @@ public final class Timeline implements FCP7XMLConvertible {
     private int numeroTimeline;
 
     /**
-     * Cette variable sert à savoir combien de timeline ont été faite.
-     */
-    public static int nombreTimeline = 0;
-
-    /**
-     * Liste des UUID pour rendre unique une timeline.<br>
-     * Cela permet de générer dans un projet 14 timelines.
-     */
-    @NotNull
-    @NotBlank
-    private static final String[] LISTE_UUID = {
-        "0e2897bc-1636-4432-bcf2-07d28e53dc39",
-        "165c6655-f6b8-4573-8f51-e8f5ba3a14f8",
-        "3f523f59-06b7-4df8-9d75-4b3d2e930afb",
-        "4381a977-9cb2-42a7-bfd6-b9ae5e0ede20",
-        "57ff1067-1a42-48f7-8a53-be80d3f14505",
-        "5d3059ef-dbd3-4d28-8d1f-d49a351fc597",
-        "6684a79f-3c34-4633-91d8-73f1071cbb7e",
-        "69fa176c-00db-4279-88f3-b8e8a0ffeee6",
-        "78ef0806-7f87-4d70-ad55-ba7ad7e2132e",
-        "7a24a4a6-d76c-4ad2-b71f-eade1e61a92c",
-        "a8f673fa-6c72-4c72-8498-bf85bd1bea4e",
-        "ca9e5f10-a53c-468e-8182-2884b3312c83",
-        "ee3f4248-fd0b-489f-866d-e0d5b3f765f1",
-        "fc6ebd17-1adc-4544-bd75-e1d7b94b557c"
-    };
-
-    /**
      * Nombre de canaux audio.
      */
     private int nombreCanaux;
@@ -225,7 +197,7 @@ public final class Timeline implements FCP7XMLConvertible {
      * @param framerate Framerate de la timeline.
      * @param startTc Timecode début de la timeline.
      */
-    public Timeline(String nom, int framerate, Timecode startTc) {
+    public Timeline(String nom, int framerate, @NotNull Timecode startTc) {
         this.nom = nom;
         this.framerate = framerate;
         this.startTc = startTc;
@@ -256,9 +228,6 @@ public final class Timeline implements FCP7XMLConvertible {
         this.finPisteAudio = new HashMap<Integer, Integer>();
         this.listePisteVideoVerrouiller = new ArrayList<Integer>(10);
         this.listePisteAudioVerrouiller = new ArrayList<Integer>(4);
-
-        this.numeroTimeline = nombreTimeline;
-        nombreTimeline++;
     }
 
     /**
@@ -266,7 +235,7 @@ public final class Timeline implements FCP7XMLConvertible {
      *
      * @param marqueur Le marqueur.
      */
-    public void addMarqueur(Marqueur marqueur) {
+    public void addMarqueur(@NotNull Marqueur marqueur) {
         this.listeMarqueur.add(marqueur);
     }
 
@@ -277,7 +246,7 @@ public final class Timeline implements FCP7XMLConvertible {
      * @param marqueur Le marqueur.
      * @return Code XML.
      */
-    private String addMarqueurTimeline(Marqueur marqueur) {
+    private String addMarqueurTimeline(@NotNull Marqueur marqueur) {
         String xml = "\t\t\t<marker>\n";
         xml += "\t\t\t\t<name>" + marqueur.getNom() + "</name>\n";
         xml += "\t\t\t\t<comment>" + marqueur.getNote() + "</comment>\n";
@@ -311,7 +280,7 @@ public final class Timeline implements FCP7XMLConvertible {
      *
      * @param media Le média.
      */
-    public void addMedia(Media media) {
+    public void addMedia(@NotNull Media media) {
         this.addMedia(1, media, this.startTc, new Timecode(this.startTc.toImage() + media.getDuree().toImage(), media.getFramerate()), true);
     }
 
@@ -321,7 +290,7 @@ public final class Timeline implements FCP7XMLConvertible {
      * @param piste Le numéro de piste.
      * @param media Le média.
      */
-    public void addMedia(int piste, Media media) {
+    public void addMedia(int piste, @NotNull Media media) {
         this.addMedia(piste, media, media.getIn(), media.getOut(), true);
     }
 
@@ -334,7 +303,7 @@ public final class Timeline implements FCP7XMLConvertible {
      * @param in Point in du média.
      * @param out Point out du média.
      */
-    public void addMedia(int piste, Media media, Timecode in, Timecode out) {
+    public void addMedia(int piste, @NotNull Media media, @NotNull Timecode in, @NotNull Timecode out) {
         // Média activé par défaut.
         this.addMedia(piste, media, in, out, true);
     }
@@ -349,7 +318,7 @@ public final class Timeline implements FCP7XMLConvertible {
      * @param out Point out du média.
      * @param active Si le média est activé dans la timeline.
      */
-    public void addMedia(int piste, Media media, Timecode in, Timecode out, boolean active) {
+    public void addMedia(int piste, @NotNull Media media, @NotNull Timecode in, @NotNull Timecode out, boolean active) {
         // Pour l'image :
         if (media instanceof MediaVideo mediaVideo) {
             // Pas de superposition (seulement si trié) :
@@ -442,7 +411,7 @@ public final class Timeline implements FCP7XMLConvertible {
      *
      * @return Code XML du projet Adobe Premiere.
      */
-    private String addItemClipVideo(MediaVideo m, Timecode start, boolean active) {
+    private String addItemClipVideo(@NotNull MediaVideo m, @NotNull Timecode start, boolean active) {
         clipitem++;
 
         // On définit à quel logiciel est destiné ce média vidéo.
@@ -1023,9 +992,12 @@ public final class Timeline implements FCP7XMLConvertible {
     /**
      * Ajoute un clip audio dans la timeline.
      *
+     * @param m Le média audio à ajouter.
+     * @param start Où le fichier commence sur la timeline.
+     * @param active Si {@code true}, alors on "active l'élément.
      * @return Le code XML à ajouter au fichier final.
      */
-    private String addItemClipAudio(MediaAudio m, int trackindex, Timecode start, boolean active) {
+    private String addItemClipAudio(@NotNull MediaAudio m, int trackindex, @NotNull Timecode start, boolean active) {
         clipitem++;
         /*String xml = "\t\t\t\t\t<clipitem id=\"clipitem-" + clipitem + "\" premiereChannelType=\"mono\">\n"
                 + "\t\t\t\t\t\t<masterclipid>masterclip-" + m.getId() + "</masterclipid>\n"
@@ -1301,8 +1273,15 @@ public final class Timeline implements FCP7XMLConvertible {
         xml += "MZ.Sequence.EditingModeGUID=\"9678af98-a7b7-4bdb-b477-7ac9c8df4a4e\" ";
         xml += "MZ.Sequence.VideoTimeDisplayFormat=\"100\" MZ.WorkOutPoint=\"1461057696000000\" MZ.WorkInPoint=\"0\" ";
         xml += "MZ.ZeroPoint=\"" + (this.startTc.toImage() * 254016000000L / this.framerate) + "\" explodedTracks=\"true\">\n";
-        xml += "\t\t<uuid>" + /*LISTE_UUID[numeroTimeline]*/ UUID.randomUUID().toString() + "</uuid>\n";
-        xml += "\t\t<duration>" + this.listeMediaVideo.get(0).getDuree().toImage() + "</duration>\n";
+        xml += "\t\t<uuid>" + UUID.randomUUID().toString() + "</uuid>\n";
+
+        // Si la liste est vide, on met "0" en durée.
+        if (this.listeMediaVideo.isEmpty()) {
+            xml += "\t\t<duration>0</duration>\n";
+        } else {
+            xml += "\t\t<duration>" + this.listeMediaVideo.get(0).getDuree().toImage() + "</duration>\n";
+        }
+
         xml += "\t\t<rate>\n";
         xml += "\t\t\t<timebase>" + this.framerate + "</timebase>\n";
         xml += "\t\t\t<ntsc>FALSE</ntsc>\n";
@@ -1542,7 +1521,7 @@ public final class Timeline implements FCP7XMLConvertible {
      *
      * @param logicielDestination Logiciel auquel est destiné la timeline.
      */
-    public void setLogicielDestination(Logiciel logicielDestination) {
+    public void setLogicielDestination(@NotNull Logiciel logicielDestination) {
         this.logicielDestination = logicielDestination;
     }
 

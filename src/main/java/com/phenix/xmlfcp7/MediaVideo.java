@@ -62,22 +62,6 @@ public class MediaVideo extends Media {
     private Logiciel logicielDestination = Logiciel.PREMIERE;
 
     /**
-     * Information pour le média vidéo, mais qu'on ne peut renseigner
-     * qu'ici.<br>
-     * Pour le cas de Resolve.<br>
-     * La valeur est celle pour de la HD/UHD 1.777.
-     */
-    private float horizontal = 0.585365831851959F;
-
-    /**
-     * Information pour le média vidéo, mais qu'on ne peut renseigner
-     * qu'ici.<br>
-     * Pour le cas de Resolve.<br>
-     * La valeur est celle pour de la HD/UHD 1.777.
-     */
-    private float vertical = 0.5F;
-
-    /**
      * Construit un MediaVideo à partir d'un nom de fichier.
      *
      * @param nomFichier Nom du fichier.
@@ -305,15 +289,6 @@ public class MediaVideo extends Media {
     }
 
     /**
-     * Modifie la position horizontale.
-     *
-     * @param horizontal Position horizontale.
-     */
-    public void setHorizontal(float horizontal) {
-        this.horizontal = horizontal;
-    }
-
-    /**
      * Modifie à quel logiciel est destiné cette vidéo.
      *
      * @param logicielDestination Logiciel auquel est destiné la timeline.
@@ -340,14 +315,5 @@ public class MediaVideo extends Media {
     public void setPosition(int x, int y) {
         this.x = x;
         this.y = y;
-    }
-
-    /**
-     * Modifie la position verticale de la vidéo.
-     *
-     * @param vertical Position verticale.
-     */
-    public void setVertical(float vertical) {
-        this.vertical = vertical;
     }
 }
